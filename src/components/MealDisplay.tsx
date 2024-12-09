@@ -9,17 +9,21 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
-    <div className="backdrop-blur-md bg-white/30 rounded-2xl p-8 flex-1 border border-white/20 transition-all duration-300 group">
-      <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pb-4">
-        {title}
-      </h2>
+    <div className="backdrop-blur-lg bg-white/40 rounded-3xl p-8 flex-1 border border-white/40 shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white/50">
+      <h2 className="text-2xl font-bold text-blue-600 pb-4">{title}</h2>
       <ul className="flex flex-col space-y-2">
         {menuItems.map((item, index) => (
           <li
             key={index}
-            className="text-gray-600 py-1 pl-4 relative group-hover:translate-x-2 transition-transform duration-300">
-            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
-            {item.trim()}
+            className="text-gray-700 py-1 pl-4 relative hover:translate-x-2 transition-transform duration-300">
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400" />
+            <Link
+              href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(item.trim())}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-600 transition-colors duration-300">
+              {item.trim()}
+            </Link>
           </li>
         ))}
       </ul>
@@ -30,14 +34,14 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
 const LoadingSkeleton = () => (
   <div className="flex flex-col md:flex-row gap-6">
     {[...Array(3)].map((_, i) => (
-      <div key={i} className="backdrop-blur-xl bg-white/30 rounded-2xl p-8 flex-1 border border-white/20">
+      <div key={i} className="backdrop-blur-lg bg-white/40 rounded-3xl p-8 flex-1 border border-white/40 shadow-lg">
         <div className="animate-pulse flex flex-col space-y-4">
-          <div className="h-8 w-32 bg-gradient-to-r from-indigo-300/40 to-purple-300/40 rounded-lg" />
+          <div className="h-8 w-32 bg-blue-200/50 rounded-lg" />
           <div className="space-y-3">
             {[...Array(5)].map((_, j) => (
               <div
                 key={j}
-                className="h-4 rounded w-full bg-gradient-to-r from-purple-300/30 via-indigo-300/30 to-purple-300/30"
+                className="h-4 rounded w-full bg-blue-100/50"
                 style={{
                   animationDelay: `${j * 100}ms`,
                 }}
@@ -52,12 +56,12 @@ const LoadingSkeleton = () => (
 
 const Header = () => (
   <div className="flex flex-col items-start space-y-4">
-    <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+    <h1 className="text-4xl font-bold text-blue-600">
       밥{' '}
-      <span className="text-xl text-gray-400 font-normal">
+      <span className="text-xl text-gray-500 font-normal">
         by{' '}
         <Link
-          className="ease-in-out duration-300 hover:text-purple-400"
+          className="ease-in-out duration-300 hover:text-blue-400"
           href="https://github.com/sspzoa"
           target="_blank"
           rel="noreferrer noopener">
@@ -65,7 +69,7 @@ const Header = () => (
         </Link>
       </span>
     </h1>
-    <div className="hidden md:block backdrop-blur-md bg-white/30 px-6 py-3 rounded-xl border border-white/20">
+    <div className="hidden md:block backdrop-blur-lg bg-white/40 px-6 py-3 rounded-2xl border border-white/40 shadow-md">
       <code className="text-sm font-mono text-gray-600">https://밥.net/api/meal?date=yyyy-MM-dd</code>
     </div>
   </div>
@@ -95,27 +99,27 @@ const Layout = ({
   handleDateChange: (days: number) => void;
 }) => {
   const DateNavigation = () => (
-    <div className="w-full md:w-[400px] backdrop-blur-md bg-white/30 rounded-2xl px-6 py-3 flex items-center justify-center border border-white/20">
+    <div className="w-full md:w-[400px] backdrop-blur-lg bg-white/40 rounded-2xl px-6 py-3 flex items-center justify-center border border-white/40 shadow-md">
       <button
         type="button"
         onClick={() => handleDateChange(-1)}
-        className="p-2 rounded-xl hover:bg-white/30 transition-all duration-300"
+        className="p-2 rounded-xl hover:bg-white/50 transition-all duration-300"
         aria-label="이전 날짜">
-        <ChevronLeft className="w-6 h-6 text-gray-600" />
+        <ChevronLeft className="w-6 h-6 text-blue-600" />
       </button>
       <span className="md:text-xl font-medium px-6 text-gray-700">{formatDate(date)}</span>
       <button
         type="button"
         onClick={() => handleDateChange(1)}
-        className="p-2 rounded-xl hover:bg-white/30 transition-all duration-300"
+        className="p-2 rounded-xl hover:bg-white/50 transition-all duration-300"
         aria-label="다음 날짜">
-        <ChevronRight className="w-6 h-6 text-gray-600" />
+        <ChevronRight className="w-6 h-6 text-blue-600" />
       </button>
     </div>
   );
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto gap-8 p-8">
+    <div className="flex flex-col max-w-6xl mx-auto gap-4 p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:pb-16">
         <Header />
         <DateNavigation />
@@ -145,7 +149,7 @@ export default function MealDisplay() {
   if (error) {
     return (
       <Layout date={date} handleDateChange={handleDateChange}>
-        <div className="backdrop-blur-md bg-red-100/50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl">
+        <div className="backdrop-blur-lg bg-white/40 border border-red-200 text-red-700 px-6 py-4 rounded-2xl shadow-md">
           {error}
         </div>
       </Layout>
@@ -162,7 +166,7 @@ export default function MealDisplay() {
 
   return (
     <Layout date={date} handleDateChange={handleDateChange}>
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-4">
         {meals.map((meal) => (
           <MealCard key={meal.title} {...meal} />
         ))}
