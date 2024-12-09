@@ -119,7 +119,7 @@ const Layout = ({
   );
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto gap-4 p-4">
+    <div className="flex flex-col max-w-6xl mx-auto gap-4 px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:pb-16">
         <Header />
         <DateNavigation />
