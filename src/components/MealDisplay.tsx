@@ -71,12 +71,10 @@ const getNewDate = (currentDate: string, days: number) => {
 const Layout = ({
   children,
   date,
-  isLoading,
   handleDateChange,
 }: {
   children: React.ReactNode;
   date: string;
-  isLoading: boolean;
   handleDateChange: (days: number) => void;
 }) => {
   const DateNavigation = () => (
@@ -85,18 +83,16 @@ const Layout = ({
         type="button"
         onClick={() => handleDateChange(-1)}
         className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-        disabled={isLoading}
         aria-label="이전 날짜">
-        <FontAwesomeIcon icon={faChevronLeft} className={`text-xl ${isLoading ? 'text-gray-400' : 'text-gray-600'}`} />
+        <FontAwesomeIcon icon={faChevronLeft} className="text-xl text-gray-600" />
       </button>
       <span className="text-lg font-medium px-4">{formatDate(date)}</span>
       <button
         type="button"
         onClick={() => handleDateChange(1)}
         className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-        disabled={isLoading}
         aria-label="다음 날짜">
-        <FontAwesomeIcon icon={faChevronRight} className={`text-xl ${isLoading ? 'text-gray-400' : 'text-gray-600'}`} />
+        <FontAwesomeIcon icon={faChevronRight} className="text-xl text-gray-600" />
       </button>
     </div>
   );
@@ -123,7 +119,7 @@ export default function MealDisplay() {
 
   if (isLoading) {
     return (
-      <Layout date={date} isLoading={isLoading} handleDateChange={handleDateChange}>
+      <Layout date={date} handleDateChange={handleDateChange}>
         <LoadingSkeleton />
       </Layout>
     );
@@ -131,7 +127,7 @@ export default function MealDisplay() {
 
   if (error) {
     return (
-      <Layout date={date} isLoading={isLoading} handleDateChange={handleDateChange}>
+      <Layout date={date} handleDateChange={handleDateChange}>
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">{error}</div>
       </Layout>
     );
@@ -146,7 +142,7 @@ export default function MealDisplay() {
   ];
 
   return (
-    <Layout date={date} isLoading={isLoading} handleDateChange={handleDateChange}>
+    <Layout date={date} handleDateChange={handleDateChange}>
       <div className="flex flex-col md:flex-row gap-6">
         {meals.map((meal) => (
           <MealCard key={meal.title} {...meal} />
