@@ -35,10 +35,13 @@ export async function GET(request: Request) {
       return Response.json({ error: 'Date parameter is required' }, { status: 400 });
     }
 
-    // 캐시 확인
     const cachedMenu = getCachedData(dateParam);
     if (cachedMenu) {
-      return Response.json(cachedMenu);
+      return Response.json({
+        breakfast: cachedMenu.breakfast,
+        lunch: cachedMenu.lunch,
+        dinner: cachedMenu.dinner,
+      });
     }
 
     const menuPosts = await getLatestMenuDocumentIds();
@@ -56,11 +59,13 @@ export async function GET(request: Request) {
     }
 
     const mealMenu = await getMealMenu(targetPost.documentId);
-
-    // 결과를 캐시에 저장
     setCacheData(dateParam, mealMenu);
 
-    return Response.json(mealMenu);
+    return Response.json({
+      breakfast: mealMenu.breakfast,
+      lunch: mealMenu.lunch,
+      dinner: mealMenu.dinner,
+    });
   } catch (error) {
     console.error('Error fetching meal menu:', error);
     return Response.json({ error: 'Failed to fetch meal menu' }, { status: 500 });

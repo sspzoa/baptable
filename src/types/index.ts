@@ -2,7 +2,6 @@ export interface MealMenu {
   breakfast: string;
   lunch: string;
   dinner: string;
-  date: string;
 }
 
 export interface MenuPost {

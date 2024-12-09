@@ -1,9 +1,11 @@
 'use client';
 
-import { useMealMenu } from '@/hooks/useMealMenu';
+import { useMealMenu, usePreloadMealMenu } from '@/hooks/useMealMenu';
+import { selectedDateAtom } from '@/store/atoms';
+import { useAtom } from 'jotai';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 const MealCard = ({ title, content }: { title: string; content: string }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
@@ -39,13 +41,7 @@ const LoadingSkeleton = () => (
           <div className="h-8 w-32 bg-blue-200/50 rounded-lg" />
           <div className="space-y-3">
             {[...Array(5)].map((_, j) => (
-              <div
-                key={j}
-                className="h-4 rounded w-full bg-blue-100/50"
-                style={{
-                  animationDelay: `${j * 100}ms`,
-                }}
-              />
+              <div key={j} className="h-4 rounded w-full bg-blue-100/50" style={{ animationDelay: `${j * 100}ms` }} />
             ))}
           </div>
         </div>
@@ -86,7 +82,6 @@ const formatDate = (date: string) => {
 const getNewDate = (currentDate: string, days: number) => {
   const date = new Date(`${currentDate}T00:00:00+09:00`);
   date.setDate(date.getDate() + days);
-
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -97,11 +92,7 @@ const Layout = ({
   children,
   date,
   handleDateChange,
-}: {
-  children: React.ReactNode;
-  date: string;
-  handleDateChange: (days: number) => void;
-}) => {
+}: { children: React.ReactNode; date: string; handleDateChange: (days: number) => void }) => {
   const DateNavigation = () => (
     <div className="w-full md:w-[400px] backdrop-blur-lg bg-white/40 rounded-2xl px-6 py-3 flex items-center justify-center border border-white/40 shadow-md">
       <button
@@ -134,18 +125,25 @@ const Layout = ({
 };
 
 export default function MealDisplay() {
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  const [date, setDate] = useState(today);
-  const { data: menu, error, isLoading } = useMealMenu(date);
+  const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
+  const { data: menu, error, isLoading } = useMealMenu();
+  const { preloadDate } = usePreloadMealMenu();
 
   const handleDateChange = (days: number) => {
-    setDate(getNewDate(date, days));
+    const newDate = getNewDate(selectedDate, days);
+    setSelectedDate(newDate);
   };
+
+  useEffect(() => {
+    const nextDay = getNewDate(selectedDate, 1);
+    const previousDay = getNewDate(selectedDate, -1);
+    preloadDate(nextDay);
+    preloadDate(previousDay);
+  }, [selectedDate, preloadDate]);
 
   if (isLoading) {
     return (
-      <Layout date={date} handleDateChange={handleDateChange}>
+      <Layout date={selectedDate} handleDateChange={handleDateChange}>
         <LoadingSkeleton />
       </Layout>
     );
@@ -153,9 +151,9 @@ export default function MealDisplay() {
 
   if (error) {
     return (
-      <Layout date={date} handleDateChange={handleDateChange}>
+      <Layout date={selectedDate} handleDateChange={handleDateChange}>
         <div className="backdrop-blur-lg bg-white/40 border border-red-200 text-red-700 px-6 py-4 rounded-2xl shadow-md">
-          {error}
+          {error instanceof Error ? error.message : 'Failed to load menu'}
         </div>
       </Layout>
     );
@@ -170,7 +168,7 @@ export default function MealDisplay() {
   ];
 
   return (
-    <Layout date={date} handleDateChange={handleDateChange}>
+    <Layout date={selectedDate} handleDateChange={handleDateChange}>
       <div className="flex flex-col md:flex-row gap-4">
         {meals.map((meal) => (
           <MealCard key={meal.title} {...meal} />
