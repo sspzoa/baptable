@@ -6,10 +6,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /*user-select: none;*/
 }
 
 html,
 body {
   scroll-behavior: smooth;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e2e8ff 0%, #e1d0ff 100%);
+  color: #334155;
+}
+
+main {
+  position: relative;
+  overflow-x: hidden;
+}
+
+main::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 65%);
+  pointer-events: none;
+  z-index: -1;
 }
