@@ -9,7 +9,7 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
-    <div className="backdrop-blur-md bg-white/30 rounded-2xl p-8 flex-1 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300 group">
+    <div className="backdrop-blur-md bg-white/30 rounded-2xl p-8 flex-1 border border-white/20 shadow-md transition-all duration-300 group">
       <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pb-4">
         {title}
       </h2>
@@ -65,7 +65,7 @@ const Header = () => (
         </Link>
       </span>
     </h1>
-    <div className="backdrop-blur-md bg-white/30 px-6 py-3 rounded-xl border border-white/20">
+    <div className="hidden md:block backdrop-blur-md bg-white/30 px-6 py-3 rounded-xl border border-white/20">
       <code className="text-sm font-mono text-gray-600">https://밥.net/api/meal?date=yyyy-MM-dd</code>
     </div>
   </div>
@@ -95,7 +95,7 @@ const Layout = ({
   handleDateChange: (days: number) => void;
 }) => {
   const DateNavigation = () => (
-    <div className="backdrop-blur-md bg-white/30 rounded-2xl px-6 py-3 flex items-center justify-center border border-white/20">
+    <div className="w-full md:w-[400px] backdrop-blur-md bg-white/30 rounded-2xl px-6 py-3 flex items-center justify-center border border-white/20">
       <button
         type="button"
         onClick={() => handleDateChange(-1)}
@@ -103,7 +103,7 @@ const Layout = ({
         aria-label="이전 날짜">
         <ChevronLeft className="w-6 h-6 text-gray-600" />
       </button>
-      <span className="text-xl font-medium px-6 text-gray-700">{formatDate(date)}</span>
+      <span className="md:text-xl font-medium px-6 text-gray-700">{formatDate(date)}</span>
       <button
         type="button"
         onClick={() => handleDateChange(1)}
