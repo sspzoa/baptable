@@ -51,7 +51,7 @@ const Header = () => (
     </h1>
     <div className="flex justify-center">
       <code className="bg-amber-50 px-4 py-2 rounded-md text-sm font-mono">
-        https://밥.net/api/meal?date=yyyy-MM-DD
+        https://밥.net/api/meal?date=yyyy-MM-dd
       </code>
     </div>
   </div>
