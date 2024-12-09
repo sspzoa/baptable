@@ -23,6 +23,7 @@ export function useMealMenu(date: string): UseMealMenuReturn {
       }
 
       try {
+        // The date parameter is already in KST from MealDisplay
         const response = await fetch(`/api/meal?date=${date}`);
         if (!response.ok) {
           throw new Error('Failed to fetch menu');

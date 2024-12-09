@@ -76,7 +76,7 @@ const Header = () => (
 );
 
 const formatDate = (date: string) => {
-  const dateObj = new Date(date);
+  const dateObj = new Date(`${date}T00:00:00+09:00`);
   const [year, month, day] = date.split('-');
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
   const weekday = weekdays[dateObj.getDay()];
@@ -84,9 +84,13 @@ const formatDate = (date: string) => {
 };
 
 const getNewDate = (currentDate: string, days: number) => {
-  const date = new Date(currentDate);
+  const date = new Date(`${currentDate}T00:00:00+09:00`);
   date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0];
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 const Layout = ({
@@ -130,7 +134,8 @@ const Layout = ({
 };
 
 export default function MealDisplay() {
-  const today = new Date().toISOString().split('T')[0];
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const [date, setDate] = useState(today);
   const { data: menu, error, isLoading } = useMealMenu(date);
 
