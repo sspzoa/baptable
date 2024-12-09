@@ -32,7 +32,7 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
 };
 
 const LoadingSkeleton = () => (
-  <div className="flex flex-col md:flex-row gap-6">
+  <div className="flex flex-col md:flex-row gap-4">
     {[...Array(3)].map((_, i) => (
       <div key={i} className="backdrop-blur-lg bg-white/40 rounded-3xl p-8 flex-1 border border-white/40 shadow-lg">
         <div className="animate-pulse flex flex-col space-y-4">
