@@ -48,7 +48,6 @@ export async function getMealMenu(documentId: string): Promise<MealMenu> {
     breakfast: getMeal('조식'),
     lunch: getMeal('중식'),
     dinner: getMeal('석식'),
-    date: documentId,
   };
 }
 
