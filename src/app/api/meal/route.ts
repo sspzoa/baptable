@@ -55,7 +55,7 @@ export async function getMealMenu(documentId: string): Promise<MealMenu> {
 const formatDate = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   try {
     const dateParam = new URL(request.url).searchParams.get('date');
     if (!dateParam) {
@@ -82,4 +82,4 @@ export async function GET(request: Request) {
     console.error('Error fetching meal menu:', error);
     return Response.json({ error: 'Failed to fetch meal menu' }, { status: 500 });
   }
-}
+};
