@@ -9,7 +9,7 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
-    <div className="backdrop-blur-md bg-white/30 rounded-2xl p-8 flex-1 border border-white/20 shadow-md transition-all duration-300 group">
+    <div className="backdrop-blur-md bg-white/30 rounded-2xl p-8 flex-1 border border-white/20 transition-all duration-300 group">
       <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pb-4">
         {title}
       </h2>
