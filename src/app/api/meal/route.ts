@@ -5,7 +5,7 @@ interface CacheEntry {
   timestamp: number;
 }
 
-const CACHE_DURATION = 1000 * 60 * 60; // 1시간
+const CACHE_DURATION = 1000 * 60 * 60 * 24 * 7;
 const menuCache = new Map<string, CacheEntry>();
 
 function getCachedData(key: string): any | null {
