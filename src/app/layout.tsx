@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: '밥',
   description: '한국디지털미디어고등학교 급식 API',
   openGraph: {
-    images: [{ url: 'https://https://xn--rh3b.net/images/og-image.png' }],
+    images: [{ url: 'https://xn--rh3b.net/images/og-image.png' }],
   },
 };
 
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <head>
-        <meta property="og:image" content="https://https://xn--rh3b.net/images/og-image.png" />
+        <meta property="og:image" content="https://xn--rh3b.net/images/og-image.png" />
         <meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
