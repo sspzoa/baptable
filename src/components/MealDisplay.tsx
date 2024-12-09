@@ -26,9 +26,9 @@ const MealCard = ({ title, content }: { title: string; content: string }) => {
 const LoadingSkeleton = () => (
   <div className="flex flex-col md:flex-row gap-6">
     {[...Array(3)].map((_, i) => (
-      <div key={i} className="bg-white rounded-lg shadow-md p-6 animate-pulse flex-1 flex-col space-y-1">
-        <div className="h-6 w-24 bg-gray-200 rounded pb-2" />
-        <div className="h-36 w-full bg-gray-200 rounded" />
+      <div key={i} className="bg-white rounded-lg shadow-md p-6 animate-pulse flex-1 flex-col space-y-2">
+        <div className="h-[28px] w-24 bg-gray-200 rounded pb-2" />
+        <div className="h-[300px] w-full bg-gray-200 rounded" />
       </div>
     ))}
   </div>
