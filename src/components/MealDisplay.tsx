@@ -24,7 +24,12 @@ const getNewDate = (currentDate: string, days: number) => {
   return `${year}-${month}-${day}`;
 };
 
-const MealCard = ({ title, content, icon: Icon }: { title: string; content: string; icon: any }) => {
+const MealCard = ({
+  title,
+  content,
+  icon: Icon,
+  isEmpty,
+}: { title: string; content: string; icon: any; isEmpty?: boolean }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
@@ -38,23 +43,27 @@ const MealCard = ({ title, content, icon: Icon }: { title: string; content: stri
           {title}
         </h2>
       </div>
-      <ul className="relative flex flex-col space-y-2">
-        {menuItems.map((item, index) => (
-          <li
-            key={`${item}-${index}`}
-            className="flex items-center group/item text-gray-700 py-1 pl-3 relative hover:translate-x-2 transition-all duration-300">
-            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
-            <Link
-              href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(item.trim())}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-sm hover:text-blue-600 transition-colors duration-300">
-              {item.trim()}
-              <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {isEmpty ? (
+        <div className="relative flex items-center justify-center h-24 text-gray-500">급식 정보가 없습니다</div>
+      ) : (
+        <ul className="relative flex flex-col space-y-2">
+          {menuItems.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              className="flex items-center group/item text-gray-700 py-1 pl-3 relative hover:translate-x-2 transition-all duration-300">
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
+              <Link
+                href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(item.trim())}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm hover:text-blue-600 transition-colors duration-300">
+                {item.trim()}
+                <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
@@ -134,7 +143,11 @@ const Layout = ({
   children,
   date,
   handleDateChange,
-}: { children: React.ReactNode; date: string; handleDateChange: (days: number) => void }) => {
+}: {
+  children: React.ReactNode;
+  date: string;
+  handleDateChange: (days: number) => void;
+}) => {
   return (
     <div className="md:min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 md:h-[calc(100dvh-2rem)]">
@@ -189,19 +202,39 @@ export default function MealDisplay() {
   if (error) {
     return (
       <Layout date={selectedDate} handleDateChange={handleDateChange}>
-        <div className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-red-50 to-red-100/40 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
-          {error instanceof Error ? error.message : 'Failed to load menu'}
+        <div className="flex flex-col md:flex-row gap-3 h-full">
+          {[
+            { title: '조식', icon: Coffee },
+            { title: '중식', icon: Utensils },
+            { title: '석식', icon: Moon },
+          ].map((meal) => (
+            <MealCard key={meal.title} {...meal} content="" isEmpty={true} />
+          ))}
         </div>
       </Layout>
     );
   }
 
-  if (!menu) return null;
+  if (!menu || (!menu.breakfast && !menu.lunch && !menu.dinner)) {
+    return (
+      <Layout date={selectedDate} handleDateChange={handleDateChange}>
+        <div className="flex flex-col md:flex-row gap-3 h-full">
+          {[
+            { title: '조식', icon: Coffee },
+            { title: '중식', icon: Utensils },
+            { title: '석식', icon: Moon },
+          ].map((meal) => (
+            <MealCard key={meal.title} {...meal} content="" isEmpty={true} />
+          ))}
+        </div>
+      </Layout>
+    );
+  }
 
   const meals = [
-    { title: '조식', content: menu.breakfast, icon: Coffee },
-    { title: '중식', content: menu.lunch, icon: Utensils },
-    { title: '석식', content: menu.dinner, icon: Moon },
+    { title: '조식', content: menu.breakfast || '', icon: Coffee, isEmpty: !menu.breakfast },
+    { title: '중식', content: menu.lunch || '', icon: Utensils, isEmpty: !menu.lunch },
+    { title: '석식', content: menu.dinner || '', icon: Moon, isEmpty: !menu.dinner },
   ];
 
   return (
