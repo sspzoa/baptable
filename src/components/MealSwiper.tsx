@@ -37,36 +37,14 @@ export const MealSwiper: React.FC<MealSwiperProps> = ({ meals }) => {
 
   return (
     <div className="relative h-full flex flex-col">
-      <div
-        className="flex-1 touch-pan-y overflow-hidden"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div
-          className="h-full flex transition-transform duration-300 ease-in-out"
-          style={{
-            width: `${meals.length * 100}%`,
-            transform: `translateX(-${(currentIndex * 100) / meals.length}%)`
-          }}
-        >
-          {meals.map((meal, index) => (
-            <div key={index} className="h-full" style={{ width: `${100 / meals.length}%` }}>
-              <MealCard {...meal} />
-            </div>
-          ))}
+      <div className="flex-1 touch-pan-y" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+        <div className="h-full">
+          <MealCard {...meals[currentIndex]} />
         </div>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {meals.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex ? "bg-blue-600 w-4" : "bg-blue-300"
-            }`}
-            aria-label={`${index + 1}번째 메뉴로 이동`}
-          />
+          <button key={index} onClick={() => setCurrentIndex(index)} className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "bg-blue-600 w-4" : "bg-blue-300"}`} aria-label={`${index + 1}번째 메뉴로 이동`} />
         ))}
       </div>
     </div>

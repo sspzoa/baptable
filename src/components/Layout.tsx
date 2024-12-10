@@ -22,19 +22,31 @@ const Header: React.FC = () => (
   </div>
 );
 
-const DateNavigation: React.FC<DateNavigationProps & { isLoading?: boolean }> = ({ date, handleDateChange, isLoading }) => (
+const DateNavigation: React.FC<DateNavigationProps> = ({ date, handleDateChange }) => (
   <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
     <button type="button" onClick={() => handleDateChange(-1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-blue-100 before:to-purple-100 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="이전 날짜">
       <ChevronLeft className="w-5 h-5 text-blue-600 relative z-10" />
     </button>
     <div className="w-[220px] text-center">
-      <span className={`text-base font-medium px-4 text-gray-700 transition-opacity duration-300 ease-in-out ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-        {formatDate(date)}
-      </span>
+      <span className="text-base font-medium px-4 text-gray-700">{formatDate(date)}</span>
     </div>
     <button type="button" onClick={() => handleDateChange(1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-blue-100 before:to-purple-100 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="다음 날짜">
       <ChevronRight className="w-5 h-5 text-blue-600 relative z-10" />
     </button>
+  </div>
+);
+
+const DateNavigationSkeleton: React.FC = () => (
+  <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
+    <div className="p-1.5">
+      <div className="w-5 h-5 bg-blue-200/50 rounded-lg" />
+    </div>
+    <div className="w-[220px] flex justify-center">
+      <div className="animate-pulse w-[180px] h-6 bg-blue-200/50 rounded-lg" />
+    </div>
+    <div className="p-1.5">
+      <div className="w-5 h-5 bg-blue-200/50 rounded-lg" />
+    </div>
   </div>
 );
 
@@ -49,15 +61,13 @@ export const Layout: React.FC<ExtendedLayoutProps> = ({ children, date, handleDa
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
         </div>
-        <DateNavigation
-          date={date}
-          handleDateChange={handleDateChange}
-          isLoading={initialLoading}
-        />
+        {initialLoading ? (
+          <DateNavigationSkeleton />
+        ) : (
+          <DateNavigation date={date} handleDateChange={handleDateChange} />
+        )}
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </div>
   );
 };
-
-export default Layout;
