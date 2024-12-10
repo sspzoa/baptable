@@ -33,8 +33,8 @@ const MealCard = ({
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
-    <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-4 flex-1 border border-white/50 transition-all duration-500">
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/60 to-white/40 rounded-2xl p-4 flex-1 border border-white/50 transition-all duration-500">
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div className="relative flex items-center gap-2 mb-3">
         <div className="p-2 bg-blue-500/10 rounded-xl">
           <Icon className="w-5 h-5 text-blue-600" />
@@ -76,7 +76,7 @@ const LoadingSkeleton = () => {
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
-          className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-4 flex-1 border border-white/50">
+          className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/60 to-white/40 rounded-2xl p-4 flex-1 border border-white/50">
           <div className="animate-pulse flex flex-col">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-9 h-9 bg-blue-200/50 rounded-xl" />
@@ -113,28 +113,28 @@ const Header = () => (
         </Link>
       </span>
     </h1>
-    <div className="hidden md:flex overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 px-4 py-2 rounded-xl border border-white/50">
+    <div className="hidden md:flex overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/60 to-white/40 px-4 py-2 rounded-xl border border-white/50">
       <code className="text-xs font-mono text-gray-600 select-text">https://밥.net/api/meal?date=yyyy-MM-dd</code>
     </div>
   </div>
 );
 
 const DateNavigation = ({ date, handleDateChange }: { date: string; handleDateChange: (days: number) => void }) => (
-  <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
+  <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/60 to-white/40 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
     <button
       type="button"
       onClick={() => handleDateChange(-1)}
-      className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-blue-100 before:to-purple-100 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+      className="p-1.5 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-300"
       aria-label="이전 날짜">
-      <ChevronLeft className="w-5 h-5 text-blue-600 relative z-10" />
+      <ChevronLeft className="w-5 h-5 text-blue-600" />
     </button>
     <span className="text-base font-medium px-4 text-gray-700">{formatDate(date)}</span>
     <button
       type="button"
       onClick={() => handleDateChange(1)}
-      className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-blue-100 before:to-purple-100 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+      className="p-1.5 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-300"
       aria-label="다음 날짜">
-      <ChevronRight className="w-5 h-5 text-blue-600 relative z-10" />
+      <ChevronRight className="w-5 h-5 text-blue-600" />
     </button>
   </div>
 );
@@ -149,7 +149,7 @@ const Layout = ({
   handleDateChange: (days: number) => void;
 }) => {
   return (
-    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-100 to-purple-100 p-4">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 md:h-[calc(100dvh-2rem)]">
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
