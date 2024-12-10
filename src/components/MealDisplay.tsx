@@ -246,8 +246,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, date, handleDateChange }) => {
   return (
-    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-100 to-purple-100 p-4">
-      <div className="max-w-6xl mx-auto flex flex-col gap-4 h-[calc(100dvh-2rem)]">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-100 to-purple-100 py-8 px-4">
+      <div className="max-w-6xl mx-auto flex flex-col gap-4 h-[calc(100dvh-4rem)]">
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
         </div>
