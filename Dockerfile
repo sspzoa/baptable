@@ -3,7 +3,6 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN bun pm trust --all
 RUN bun install
 
 COPY . .
