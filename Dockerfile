@@ -1,12 +1,12 @@
-FROM oven/bun:latest
+FROM node:latest
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 
-RUN bun install
+RUN yarn install
 
 COPY . .
-RUN bun run build
+RUN yarn build
 
 EXPOSE 3000
-CMD [ "bun", "run", "start" ]
+CMD [ "yarn", "start" ]
