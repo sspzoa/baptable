@@ -1,13 +1,11 @@
-FROM node:20-slim
+FROM oven/bun:latest
 WORKDIR /app
 
-RUN corepack enable
-
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json ./
+RUN bun install
 
 COPY . .
-RUN yarn build
+RUN bun run build
 
 EXPOSE 3000
-CMD [ "yarn", "start" ]
+CMD [ "bun", "run", "start" ]
