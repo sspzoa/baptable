@@ -5,7 +5,24 @@ import { selectedDateAtom } from '@/store/atoms';
 import { useAtom } from 'jotai';
 import { ChevronLeft, ChevronRight, Coffee, ExternalLink, Moon, Utensils } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+const formatDate = (date: string) => {
+  const dateObj = new Date(date);
+  const [year, month, day] = date.split('-');
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekday = weekdays[dateObj.getUTCDay()];
+  return `${year}년 ${month}월 ${day}일 (${weekday})`;
+};
+
+const getNewDate = (currentDate: string, days: number) => {
+  const date = new Date(currentDate);
+  date.setDate(date.getDate() + days);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 const MealCard = ({ title, content, icon: Icon }: { title: string; content: string; icon: any }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
@@ -13,7 +30,6 @@ const MealCard = ({ title, content, icon: Icon }: { title: string; content: stri
   return (
     <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/60 to-white/40 rounded-2xl p-4 flex-1 border border-white/50 transition-all duration-500">
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
       <div className="relative flex items-center gap-2 mb-3">
         <div className="p-2 bg-blue-500/10 rounded-xl">
           <Icon className="w-5 h-5 text-blue-600" />
@@ -22,11 +38,10 @@ const MealCard = ({ title, content, icon: Icon }: { title: string; content: stri
           {title}
         </h2>
       </div>
-
       <ul className="relative flex flex-col space-y-2">
         {menuItems.map((item, index) => (
           <li
-            key={index}
+            key={`${item}-${index}`}
             className="flex items-center group/item text-gray-700 py-1 pl-3 relative hover:translate-x-2 transition-all duration-300">
             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
             <Link
@@ -44,31 +59,34 @@ const MealCard = ({ title, content, icon: Icon }: { title: string; content: stri
   );
 };
 
-const LoadingSkeleton = () => (
-  <div className="flex flex-col md:flex-row gap-3">
-    {[...Array(3)].map((_, i) => (
-      <div
-        key={i}
-        className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/60 to-white/40 rounded-2xl p-4 flex-1 border border-white/50">
-        <div className="animate-pulse flex flex-col space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-blue-200/50 rounded-xl" />
-            <div className="h-6 w-24 bg-blue-200/50 rounded-lg" />
-          </div>
-          <div className="space-y-2">
-            {[...Array(5)].map((_, j) => (
-              <div
-                key={j}
-                className="h-3 rounded-full bg-gradient-to-r from-blue-100/50 to-purple-100/50"
-                style={{ width: `${Math.random() * 40 + 60}%` }}
-              />
-            ))}
+const LoadingSkeleton = () => {
+  const widths = ['w-2/3', 'w-3/4', 'w-4/5', 'w-3/5'];
+
+  return (
+    <div className="flex flex-col md:flex-row gap-3 h-full">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/60 to-white/40 rounded-2xl p-4 flex-1 border border-white/50">
+          <div className="animate-pulse flex flex-col">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-9 h-9 bg-blue-200/50 rounded-xl" />
+              <div className="h-7 w-16 bg-blue-200/50 rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              {[...Array(4)].map((_, j) => (
+                <div key={j} className="flex items-center py-1 pl-3 relative">
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-200/50" />
+                  <div className={`h-4 rounded-full bg-gradient-to-r from-blue-100/50 to-purple-100/50 ${widths[j]}`} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 const Header = () => (
   <div className="flex items-center justify-between w-full">
@@ -116,11 +134,7 @@ const Layout = ({
   children,
   date,
   handleDateChange,
-}: {
-  children: React.ReactNode;
-  date: string;
-  handleDateChange: (days: number) => void;
-}) => {
+}: { children: React.ReactNode; date: string; handleDateChange: (days: number) => void }) => {
   return (
     <div className="md:min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 md:h-[calc(100dvh-2rem)]">
@@ -134,27 +148,15 @@ const Layout = ({
   );
 };
 
-const formatDate = (date: string) => {
-  const dateObj = new Date(`${date}T00:00:00+09:00`);
-  const [year, month, day] = date.split('-');
-  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-  const weekday = weekdays[dateObj.getDay()];
-  return `${year}년 ${month}월 ${day}일 (${weekday})`;
-};
-
-const getNewDate = (currentDate: string, days: number) => {
-  const date = new Date(`${currentDate}T00:00:00+09:00`);
-  date.setDate(date.getDate() + days);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
 export default function MealDisplay() {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const { data: menu, error, isLoading } = useMealMenu();
   const { preloadDate } = usePreloadMealMenu();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleDateChange = (days: number) => {
     const newDate = getNewDate(selectedDate, days);
@@ -167,6 +169,14 @@ export default function MealDisplay() {
     preloadDate(nextDay);
     preloadDate(previousDay);
   }, [selectedDate, preloadDate]);
+
+  if (!mounted) {
+    return (
+      <Layout date={selectedDate} handleDateChange={handleDateChange}>
+        <LoadingSkeleton />
+      </Layout>
+    );
+  }
 
   if (isLoading) {
     return (
