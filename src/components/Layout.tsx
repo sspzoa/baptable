@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const Header: React.FC = () => (
-  <div className="flex items-center justify-between w-full">
+  <div className="flex items-center justify-center md:justify-between w-full">
     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
       밥{' '}
       <span className="text-base text-gray-500 font-normal">
