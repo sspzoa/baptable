@@ -28,8 +28,9 @@ const getNewDate = (currentDate: string, days: number): string => {
 const getDefaultMealIndex = (): number => {
   const hour = new Date().getHours();
   if (hour < 9) return 0;
-  if (hour < 20) return 1;
-  return 2;
+  if (hour < 14) return 1;
+  if (hour < 20) return 2;
+  return 0;
 };
 
 const MealCard: React.FC<MealCardProps> = ({ title, content, icon: Icon, isEmpty }) => {
