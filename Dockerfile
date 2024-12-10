@@ -2,7 +2,8 @@ FROM oven/bun:latest
 WORKDIR /app
 
 COPY package.json ./
-RUN bun install
+
+RUN bun pm untrusted && bun install
 
 COPY . .
 RUN bun run build
