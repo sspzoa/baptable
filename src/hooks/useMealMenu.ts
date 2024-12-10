@@ -19,7 +19,7 @@ export function useMealMenu() {
   return useQuery({
     queryKey: [MEAL_MENU_QUERY_KEY, selectedDate],
     queryFn: () => fetchMealMenu(selectedDate),
-    staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
+    staleTime: 1000 * 60 * 5,
     retry: 2,
   });
 }

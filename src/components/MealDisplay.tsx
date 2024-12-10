@@ -2,12 +2,13 @@
 
 import { useMealMenu, usePreloadMealMenu } from '@/hooks/useMealMenu';
 import { selectedDateAtom } from '@/store/atoms';
+import { MealCardProps, MealSwiperProps, MealMenu } from '@/types';
 import { useAtom } from 'jotai';
 import { ChevronLeft, ChevronRight, Coffee, ExternalLink, Moon, Utensils } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const formatDate = (date: string) => {
+const formatDate = (date: string): string => {
   const dateObj = new Date(date);
   const [year, month, day] = date.split('-');
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
@@ -15,7 +16,7 @@ const formatDate = (date: string) => {
   return `${year}년 ${month}월 ${day}일 (${weekday})`;
 };
 
-const getNewDate = (currentDate: string, days: number) => {
+const getNewDate = (currentDate: string, days: number): string => {
   const date = new Date(currentDate);
   date.setDate(date.getDate() + days);
   const year = date.getFullYear();
@@ -24,53 +25,123 @@ const getNewDate = (currentDate: string, days: number) => {
   return `${year}-${month}-${day}`;
 };
 
-const MealCard = ({
-  title,
-  content,
-  icon: Icon,
-  isEmpty,
-}: { title: string; content: string; icon: any; isEmpty?: boolean }) => {
+const getDefaultMealIndex = (): number => {
+  const hour = new Date().getHours();
+  if (hour < 9) return 0;
+  if (hour < 20) return 1;
+  return 2;
+};
+
+const MealCard: React.FC<MealCardProps> = ({ title, content, icon: Icon, isEmpty }) => {
   const menuItems = content.split('/').filter((item) => item.trim());
 
   return (
-    <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-4 flex-1 border border-white/50 transition-all duration-500">
+    <div className="group relative h-full overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-6 flex-1 border border-white/50 transition-all duration-500">
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative flex items-center gap-2 mb-3">
-        <div className="p-2 bg-blue-500/10 rounded-xl">
-          <Icon className="w-5 h-5 text-blue-600" />
+      <div className="relative flex flex-col h-full">
+        <div className="flex items-center gap-2 mb-6">
+          <div className="p-2 bg-blue-500/10 rounded-xl">
+            <Icon className="w-5 h-5 text-blue-600" />
+          </div>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            {title}
+          </h2>
         </div>
-        <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-          {title}
-        </h2>
+        {isEmpty ? (
+          <div className="relative flex items-center justify-center flex-1 text-gray-500">급식 정보가 없습니다</div>
+        ) : (
+          <ul className="relative flex flex-col space-y-2 flex-1">
+            {menuItems.map((item, index) => (
+              <li
+                key={`${item}-${index}`}
+                className="flex items-center group/item text-gray-700 py-1 pl-3 relative hover:translate-x-2 transition-all duration-300">
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
+                <Link
+                  href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(
+                    item.trim()
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-sm hover:text-blue-600 transition-colors duration-300">
+                  {item.trim()}
+                  <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      {isEmpty ? (
-        <div className="relative flex items-center justify-center h-24 text-gray-500">급식 정보가 없습니다</div>
-      ) : (
-        <ul className="relative flex flex-col space-y-2">
-          {menuItems.map((item, index) => (
-            <li
-              key={`${item}-${index}`}
-              className="flex items-center group/item text-gray-700 py-1 pl-3 relative hover:translate-x-2 transition-all duration-300">
-              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
-              <Link
-                href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(item.trim())}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-sm hover:text-blue-600 transition-colors duration-300">
-                {item.trim()}
-                <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };
 
-const LoadingSkeleton = () => {
-  const widths = ['w-2/3', 'w-3/4', 'w-4/5', 'w-3/5'];
+const MealSwiper: React.FC<MealSwiperProps> = ({ meals }) => {
+  const [currentIndex, setCurrentIndex] = useState<number>(getDefaultMealIndex());
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && currentIndex < meals.length - 1) {
+      setCurrentIndex(curr => curr + 1);
+    }
+    if (isRightSwipe && currentIndex > 0) {
+      setCurrentIndex(curr => curr - 1);
+    }
+  };
+
+  return (
+    <div className="relative h-full flex flex-col">
+      <div
+        className="flex-1 touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="h-full">
+          <MealCard {...meals[currentIndex]} />
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        {meals.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentIndex
+                ? "bg-blue-600 w-4"
+                : "bg-blue-300"
+            }`}
+            aria-label={`${index + 1}번째 메뉴로 이동`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+interface LoadingSkeletonProps {
+  widths?: string[];
+}
+
+const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({ widths = ['w-2/3', 'w-3/4', 'w-4/5', 'w-3/5'] }) => {
   return (
     <div className="flex flex-col md:flex-row gap-3 h-full">
       {[...Array(3)].map((_, i) => (
@@ -97,7 +168,7 @@ const LoadingSkeleton = () => {
   );
 };
 
-const Header = () => (
+const Header: React.FC = () => (
   <div className="flex items-center justify-between w-full">
     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
       밥{' '}
@@ -119,7 +190,12 @@ const Header = () => (
   </div>
 );
 
-const DateNavigation = ({ date, handleDateChange }: { date: string; handleDateChange: (days: number) => void }) => (
+interface DateNavigationProps {
+  date: string;
+  handleDateChange: (days: number) => void;
+}
+
+const DateNavigation: React.FC<DateNavigationProps> = ({ date, handleDateChange }) => (
   <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
     <button
       type="button"
@@ -139,18 +215,16 @@ const DateNavigation = ({ date, handleDateChange }: { date: string; handleDateCh
   </div>
 );
 
-const Layout = ({
-  children,
-  date,
-  handleDateChange,
-}: {
+interface LayoutProps {
   children: React.ReactNode;
   date: string;
   handleDateChange: (days: number) => void;
-}) => {
+}
+
+const Layout: React.FC<LayoutProps> = ({ children, date, handleDateChange }) => {
   return (
     <div className="min-h-[100dvh] bg-gradient-to-br from-blue-100 to-purple-100 p-4">
-      <div className="max-w-6xl mx-auto flex flex-col gap-4 md:h-[calc(100dvh-2rem)]">
+      <div className="max-w-6xl mx-auto flex flex-col gap-4 h-[calc(100dvh-2rem)]">
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
         </div>
@@ -161,11 +235,11 @@ const Layout = ({
   );
 };
 
-export default function MealDisplay() {
+const MealDisplay: React.FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const { data: menu, error, isLoading } = useMealMenu();
   const { preloadDate } = usePreloadMealMenu();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
@@ -199,51 +273,49 @@ export default function MealDisplay() {
     );
   }
 
-  if (error) {
+  const defaultEmptyMeals: MealCardProps[] = [
+    { title: '조식', icon: Coffee, content: "", isEmpty: true },
+    { title: '중식', icon: Utensils, content: "", isEmpty: true },
+    { title: '석식', icon: Moon, content: "", isEmpty: true }
+  ];
+
+  if (error || !menu) {
     return (
       <Layout date={selectedDate} handleDateChange={handleDateChange}>
-        <div className="flex flex-col md:flex-row gap-3 h-full">
-          {[
-            { title: '조식', icon: Coffee },
-            { title: '중식', icon: Utensils },
-            { title: '석식', icon: Moon },
-          ].map((meal) => (
-            <MealCard key={meal.title} {...meal} content="" isEmpty={true} />
-          ))}
+        <div className="flex-1 h-full">
+          <div className="hidden md:flex flex-row gap-3 h-full">
+            {defaultEmptyMeals.map((meal) => (
+              <MealCard key={meal.title} {...meal} />
+            ))}
+          </div>
+          <div className="md:hidden h-full">
+            <MealSwiper meals={defaultEmptyMeals} />
+          </div>
         </div>
       </Layout>
     );
   }
 
-  if (!menu || (!menu.breakfast && !menu.lunch && !menu.dinner)) {
-    return (
-      <Layout date={selectedDate} handleDateChange={handleDateChange}>
-        <div className="flex flex-col md:flex-row gap-3 h-full">
-          {[
-            { title: '조식', icon: Coffee },
-            { title: '중식', icon: Utensils },
-            { title: '석식', icon: Moon },
-          ].map((meal) => (
-            <MealCard key={meal.title} {...meal} content="" isEmpty={true} />
-          ))}
-        </div>
-      </Layout>
-    );
-  }
-
-  const meals = [
+  const meals: MealCardProps[] = [
     { title: '조식', content: menu.breakfast || '', icon: Coffee, isEmpty: !menu.breakfast },
     { title: '중식', content: menu.lunch || '', icon: Utensils, isEmpty: !menu.lunch },
-    { title: '석식', content: menu.dinner || '', icon: Moon, isEmpty: !menu.dinner },
+    { title: '석식', content: menu.dinner || '', icon: Moon, isEmpty: !menu.dinner }
   ];
 
   return (
     <Layout date={selectedDate} handleDateChange={handleDateChange}>
-      <div className="flex flex-col md:flex-row gap-3 h-full">
-        {meals.map((meal) => (
-          <MealCard key={meal.title} {...meal} />
-        ))}
+      <div className="h-full flex flex-col">
+        <div className="hidden md:flex flex-row gap-3 flex-1">
+          {meals.map((meal) => (
+            <MealCard key={meal.title} {...meal} />
+          ))}
+        </div>
+        <div className="md:hidden flex-1">
+          <MealSwiper meals={meals} />
+        </div>
       </div>
     </Layout>
   );
-}
+};
+
+export default MealDisplay;
