@@ -22,3 +22,19 @@ export interface MealCardProps {
 export interface MealSwiperProps {
   meals: MealCardProps[];
 }
+
+export interface LoadingSkeletonProps {
+  widths?: string[];
+  isMobile?: boolean;
+}
+
+export interface DateNavigationProps {
+  date: string;
+  handleDateChange: (days: number) => void;
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
+  date: string;
+  handleDateChange: (days: number) => void;
+}
