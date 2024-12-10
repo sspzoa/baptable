@@ -149,7 +149,7 @@ const Layout = ({
   handleDateChange: (days: number) => void;
 }) => {
   return (
-    <div className="md:min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 md:h-[calc(100dvh-2rem)]">
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
