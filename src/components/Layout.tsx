@@ -1,8 +1,36 @@
 import { DateNavigationProps, LayoutProps } from '@/types';
 import { formatDate } from '@/utils/date';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+
+const CopyButton: React.FC<{ text: string }> = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="ml-2 p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-blue-100 before:to-purple-100 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+      aria-label="Copy to clipboard"
+    >
+      {copied ? (
+        <Check className="w-4 h-4 text-green-600 relative z-10" />
+      ) : (
+        <Copy className="w-4 h-4 text-blue-600 relative z-10" />
+      )}
+    </button>
+  );
+};
 
 const Header: React.FC = () => (
   <div className="flex items-center justify-center md:justify-between w-full">
@@ -16,8 +44,9 @@ const Header: React.FC = () => (
         </Link>
       </span>
     </h1>
-    <div className="hidden md:flex overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 px-4 py-2 rounded-xl border border-white/50">
+    <div className="hidden md:flex items-center overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 px-4 py-2 rounded-xl border border-white/50">
       <code className="text-xs font-mono text-gray-600 select-text">https://밥.net/api/meal?date=yyyy-MM-dd</code>
+      <CopyButton text="https://밥.net/api/meal?date=yyyy-MM-dd" />
     </div>
   </div>
 );
