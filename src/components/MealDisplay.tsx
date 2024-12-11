@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from './Layout';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import { MealCard } from './MealCard';
-import { MealSwiper } from './MealSwiper';
+import MobileMealDisplay from './MobileMealDisplay';
 
 const MealDisplay: React.FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
@@ -66,7 +66,7 @@ const MealDisplay: React.FC = () => {
             ))}
           </div>
           <div className="md:hidden flex-1">
-            <MealSwiper meals={defaultEmptyMeals} />
+            <MobileMealDisplay meals={defaultEmptyMeals} />
           </div>
         </div>
       </Layout>
@@ -88,7 +88,7 @@ const MealDisplay: React.FC = () => {
           ))}
         </div>
         <div className="md:hidden flex-1">
-          <MealSwiper meals={meals} />
+          <MobileMealDisplay meals={meals} />
         </div>
       </div>
     </Layout>

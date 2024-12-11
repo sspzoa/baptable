@@ -83,7 +83,7 @@ export const Layout: React.FC<ExtendedLayoutProps> = ({ children, date, handleDa
           handleDateChange={handleDateChange}
           isLoading={initialLoading}
         />
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="flex-1 overflow-hidden">{children}</div>
       </div>
     </div>
   );
