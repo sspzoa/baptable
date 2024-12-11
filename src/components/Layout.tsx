@@ -20,7 +20,7 @@ const CopyButton: React.FC<{ text: string }> = ({ text }) => {
   return (
     <button
       onClick={handleCopy}
-      className="ml-2 p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200 before:to-red-200 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+      className="ml-2 p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200/60 before:to-red-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
       aria-label="Copy to clipboard"
     >
       {copied ? (
@@ -53,7 +53,7 @@ const Header: React.FC = () => (
 
 const DateNavigation: React.FC<DateNavigationProps & { isLoading?: boolean }> = ({ date, handleDateChange, isLoading }) => (
   <div className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center border border-white/50">
-    <button type="button" onClick={() => handleDateChange(-1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200 before:to-red-200 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="이전 날짜">
+    <button type="button" onClick={() => handleDateChange(-1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200/60 before:to-red-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="이전 날짜">
       <ChevronLeft className="w-5 h-5 text-orange-600 relative z-10" />
     </button>
     <div className="w-[220px] text-center">
@@ -61,7 +61,7 @@ const DateNavigation: React.FC<DateNavigationProps & { isLoading?: boolean }> = 
         {formatDate(date)}
       </span>
     </div>
-    <button type="button" onClick={() => handleDateChange(1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200 before:to-red-200 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="다음 날짜">
+    <button type="button" onClick={() => handleDateChange(1)} className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200/60 before:to-red-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out" aria-label="다음 날짜">
       <ChevronRight className="w-5 h-5 text-orange-600 relative z-10" />
     </button>
   </div>
