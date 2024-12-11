@@ -31,10 +31,12 @@ const MealDisplay: React.FC = () => {
   }, [mounted, selectedDate, setSelectedDate]);
 
   useEffect(() => {
-    const nextDay = getNewDate(selectedDate, 1);
-    const previousDay = getNewDate(selectedDate, -1);
-    preloadDate(nextDay);
-    preloadDate(previousDay);
+    for (let i = -3; i <= 3; i++) {
+      if (i !== 0) {
+        const adjacentDay = getNewDate(selectedDate, i);
+        preloadDate(adjacentDay);
+      }
+    }
   }, [selectedDate, preloadDate]);
 
   const handleDateChange = (days: number) => {
