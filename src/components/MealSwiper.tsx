@@ -63,7 +63,7 @@ export const MealSwiper: React.FC<MealSwiperProps> = ({ meals }) => {
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex ? "bg-blue-600 w-4" : "bg-blue-300"
+              index === currentIndex ? "bg-orange-600 w-4" : "bg-orange-300"
             }`}
             aria-label={`${index + 1}번째 메뉴로 이동`}
           />
