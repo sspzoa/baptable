@@ -10,6 +10,9 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}
   VERSION: ${{ github.sha }}
   NAME: ${{ github.repository_id }}
+  BLUE_PORT: 3000
+  GREEN_PORT: 3001
+  PROD_PORT: 3000
 
 jobs:
   build:
@@ -68,22 +71,54 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Create docker-compose.yml
+      - name: Check current deployment
+        id: current
         run: |
-          cat > docker-compose.yml << EOF
-          version: '3'
-          services:
-            app:
-              image: ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
-              container_name: ${{ env.NAME }}
-              ports:
-                - "3000:3000"
-              restart: always
-          EOF
+          CURRENT_PORT=$(docker ps --filter "name=${{ env.NAME }}-blue" --format "{{.Ports}}" | grep -o "0.0.0.0:3000" || true)
+          if [ ! -z "$CURRENT_PORT" ]; then
+            echo "current_container=blue" >> $GITHUB_OUTPUT
+            echo "deploy_container=green" >> $GITHUB_OUTPUT
+            echo "current_port=${{ env.BLUE_PORT }}" >> $GITHUB_OUTPUT
+            echo "deploy_port=${{ env.GREEN_PORT }}" >> $GITHUB_OUTPUT
+          else
+            echo "current_container=green" >> $GITHUB_OUTPUT
+            echo "deploy_container=blue" >> $GITHUB_OUTPUT
+            echo "current_port=${{ env.GREEN_PORT }}" >> $GITHUB_OUTPUT
+            echo "deploy_port=${{ env.BLUE_PORT }}" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Deploy
+      - name: Deploy new container
         run: |
-          docker-compose pull
-          docker-compose down || true
-          docker-compose up -d
+          docker pull ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+          
+          docker stop ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} || true
+          docker rm ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} || true
+          
+          docker run -d \
+            --name ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} \
+            -p ${{ steps.current.outputs.deploy_port }}:3000 \
+            --restart always \
+            ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+          
+          for i in {1..30}; do
+            if curl -s http://localhost:${{ steps.current.outputs.deploy_port }}/health; then
+              echo "New container is healthy"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "Health check failed"
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Switch traffic
+        run: |
+          echo "Switching traffic to port ${{ steps.current.outputs.deploy_port }}"
+          
+          if [ ! -z "${{ steps.current.outputs.current_container }}" ]; then
+            docker stop ${{ env.NAME }}-${{ steps.current.outputs.current_container }} || true
+            docker rm ${{ env.NAME }}-${{ steps.current.outputs.current_container }} || true
+          fi
+          
           docker image prune -af
