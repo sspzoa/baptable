@@ -39,7 +39,7 @@ export const MealCard = memo<MealCardProps>(({ title, content, icon: Icon, isEmp
             급식 정보가 없습니다
           </div>
         ) : (
-          <div className="max-h-[calc(100%-4rem)]">
+          <div className="max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
             <ul className="relative flex flex-col space-y-2">
               {menuItems.map((item, index) => (
                 <MenuItem key={`${item}-${index}`} item={item.trim()} />

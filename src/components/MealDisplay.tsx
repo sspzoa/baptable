@@ -19,7 +19,7 @@ const DEFAULT_EMPTY_MEALS: MealCardProps[] = [
 ] as const;
 
 const MealCardsDesktop = memo(({ meals }: { meals: MealCardProps[] }) => (
-  <div className="hidden md:flex flex-row gap-3 flex-1">
+  <div className="hidden md:flex flex-row gap-3 min-h-0 flex-1">
     {meals.map((meal) => (
       <MealCard key={meal.title} {...meal} />
     ))}
@@ -74,9 +74,9 @@ const MealDisplay = () => {
 
   return (
     <Layout date={selectedDate} handleDateChange={handleDateChange}>
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col min-h-0">
         <MealCardsDesktop meals={meals} />
-        <div className="md:hidden flex-1">
+        <div className="md:hidden flex-1 min-h-0">
           <MobileMealDisplay meals={meals} />
         </div>
       </div>

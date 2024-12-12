@@ -42,7 +42,7 @@ const MealContent = memo(({ meal }: { meal: MealCardProps }) => {
           급식 정보가 없습니다
         </div>
       ) : (
-        <div className="max-h-[calc(100%-4rem)] overflow-y-auto">
+        <div className="max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
           <ul className="relative flex flex-col space-y-2">
             {menuItems.map((item, idx) => (
               <MenuItem key={`${item}-${idx}`} item={item} />
