@@ -9,7 +9,7 @@ interface CacheEntry {
 class MenuCache {
   private static instance: MenuCache;
   private cache: Map<string, CacheEntry>;
-  private readonly CACHE_DURATION = 1000 * 60 * 60 * 24 * 7;
+  private readonly CACHE_DURATION = 1000 * 60 * 60 * 24;
 
   private constructor() {
     this.cache = new Map();
