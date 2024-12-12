@@ -1,4 +1,4 @@
-import type { MealMenu, MenuPost } from '@/types';
+import type { MealMenu, MenuPost, MealImages } from '@/types';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
@@ -48,6 +48,42 @@ export async function getLatestMenuDocumentIds(
   } catch (error) {
     console.error('Error fetching menu documents:', error);
     throw new Error('Failed to fetch menu documents');
+  }
+}
+
+export async function getMealImages(documentId: string): Promise<MealImages> {
+  try {
+    const { data } = await axiosInstance.get(
+      `${CONFIG.BASE_URL}?mid=${CONFIG.CAFETERIA_PATH}&document_srl=${documentId}`
+    );
+    const $ = cheerio.load(data);
+
+    const images: MealImages = {
+      breakfast: '',
+      lunch: '',
+      dinner: ''
+    };
+
+    // 이미지 URL 추출
+    $('.xe_content img').each((_, element) => {
+      const imgSrc = $(element).attr('src');
+      const imgAlt = $(element).attr('alt')?.toLowerCase() || '';
+
+      if (imgSrc) {
+        if (imgAlt.includes('조')) {
+          images.breakfast = new URL(imgSrc, 'https://www.dimigo.hs.kr').toString();
+        } else if (imgAlt.includes('중')) {
+          images.lunch = new URL(imgSrc, 'https://www.dimigo.hs.kr').toString();
+        } else if (imgAlt.includes('석')) {
+          images.dinner = new URL(imgSrc, 'https://www.dimigo.hs.kr').toString();
+        }
+      }
+    });
+
+    return images;
+  } catch (error) {
+    console.error('Error fetching meal images:', error);
+    throw new Error('Failed to fetch meal images');
   }
 }
 

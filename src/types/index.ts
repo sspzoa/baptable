@@ -1,9 +1,16 @@
 import type { LucideIcon } from 'lucide-react';
 
+export interface MealImages {
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+}
+
 export interface MealMenu {
   breakfast: string;
   lunch: string;
   dinner: string;
+  images?: MealImages;
 }
 
 export interface MenuPost {
@@ -17,6 +24,7 @@ export interface MealCardProps {
   content: string;
   icon: LucideIcon;
   isEmpty?: boolean;
+  imageUrl?: string;
 }
 
 export interface MealSwiperProps {

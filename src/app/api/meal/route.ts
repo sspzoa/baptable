@@ -1,4 +1,4 @@
-import { formatDate, getLatestMenuDocumentIds, getMealMenu } from '@/utils/meal';
+import { formatDate, getLatestMenuDocumentIds, getMealMenu, getMealImages } from '@/utils/meal';
 
 interface CacheEntry {
   data: any;
@@ -72,9 +72,16 @@ export async function GET(request: Request) {
     }
 
     const mealMenu = await getMealMenu(targetPost.documentId);
-    menuCache.set(dateParam, mealMenu);
+    const images = await getMealImages(targetPost.documentId);
 
-    return Response.json(mealMenu);
+    const response = {
+      ...mealMenu,
+      images
+    };
+
+    menuCache.set(dateParam, response);
+
+    return Response.json(response);
   } catch (error) {
     console.error('Error fetching meal menu:', error);
     return createErrorResponse('Internal server error', 500);

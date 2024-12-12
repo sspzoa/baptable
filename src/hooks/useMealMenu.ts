@@ -2,6 +2,8 @@ import { selectedDateAtom } from '@/store/atoms';
 import type { MealMenu } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
+import { Coffee, UtensilsCrossed, Wine } from 'lucide-react';
+import type { MealCardProps } from '@/types';
 
 const MEAL_MENU_QUERY_KEY = 'mealMenu' as const;
 const STALE_TIME = 1000 * 60 * 5;
@@ -9,7 +11,12 @@ const STALE_TIME = 1000 * 60 * 5;
 const EMPTY_MENU: MealMenu = {
   breakfast: '',
   lunch: '',
-  dinner: ''
+  dinner: '',
+  images: {
+    breakfast: '',
+    lunch: '',
+    dinner: ''
+  }
 };
 
 async function fetchMealMenu(date: string): Promise<MealMenu> {
@@ -30,10 +37,35 @@ async function fetchMealMenu(date: string): Promise<MealMenu> {
   }
 }
 
+function convertToMealCards(menu: MealMenu): MealCardProps[] {
+  return [
+    {
+      title: '아침',
+      content: menu.breakfast,
+      icon: Coffee,
+      isEmpty: !menu.breakfast,
+      imageUrl: menu.images?.breakfast
+    },
+    {
+      title: '점심',
+      content: menu.lunch,
+      icon: UtensilsCrossed,
+      isEmpty: !menu.lunch,
+      imageUrl: menu.images?.lunch
+    },
+    {
+      title: '저녁',
+      content: menu.dinner,
+      icon: Wine,
+      isEmpty: !menu.dinner,
+      imageUrl: menu.images?.dinner
+    }
+  ];
+}
+
 export function useMealMenu() {
   const [selectedDate] = useAtom(selectedDateAtom);
-
-  return useQuery({
+  const query = useQuery({
     queryKey: [MEAL_MENU_QUERY_KEY, selectedDate],
     queryFn: () => fetchMealMenu(selectedDate),
     staleTime: STALE_TIME,
@@ -45,6 +77,11 @@ export function useMealMenu() {
     },
     refetchOnWindowFocus: false,
   });
+
+  return {
+    ...query,
+    mealCards: query.data ? convertToMealCards(query.data) : []
+  };
 }
 
 export function usePreloadMealMenu() {

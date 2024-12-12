@@ -67,9 +67,27 @@ const MealDisplay = () => {
   }
 
   const meals: MealCardProps[] = error || !menu ? DEFAULT_EMPTY_MEALS : [
-    { title: '조식', content: menu.breakfast || '', icon: Coffee, isEmpty: !menu.breakfast },
-    { title: '중식', content: menu.lunch || '', icon: Utensils, isEmpty: !menu.lunch },
-    { title: '석식', content: menu.dinner || '', icon: Moon, isEmpty: !menu.dinner }
+    {
+      title: '조식',
+      content: menu.breakfast || '',
+      icon: Coffee,
+      isEmpty: !menu.breakfast,
+      imageUrl: menu.images?.breakfast
+    },
+    {
+      title: '중식',
+      content: menu.lunch || '',
+      icon: Utensils,
+      isEmpty: !menu.lunch,
+      imageUrl: menu.images?.lunch
+    },
+    {
+      title: '석식',
+      content: menu.dinner || '',
+      icon: Moon,
+      isEmpty: !menu.dinner,
+      imageUrl: menu.images?.dinner
+    }
   ];
 
   return (

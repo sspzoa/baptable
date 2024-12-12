@@ -20,7 +20,7 @@ const MenuItem = memo(({ item }: { item: string }) => (
 
 MenuItem.displayName = 'MenuItem';
 
-export const MealCard = memo<MealCardProps>(({ title, content, icon: Icon, isEmpty }) => {
+export const MealCard = memo<MealCardProps>(({ title, content, icon: Icon, isEmpty, imageUrl }) => {
   const menuItems = isEmpty ? [] : content.split('/').filter(item => item.trim());
 
   return (
@@ -39,7 +39,18 @@ export const MealCard = memo<MealCardProps>(({ title, content, icon: Icon, isEmp
             급식 정보가 없습니다
           </div>
         ) : (
-          <div className="max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
+          <div className="flex flex-col gap-4 max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
+            {imageUrl && (
+              <div className="relative w-full rounded-xl flex items-center justify-center">
+                <img
+                  draggable={false}
+                  src={imageUrl}
+                  alt={`${title} 메뉴 이미지`}
+                  className="object-contain rounded-2xl"
+                  loading="lazy"
+                />
+              </div>
+            )}
             <ul className="relative flex flex-col space-y-2">
               {menuItems.map((item, index) => (
                 <MenuItem key={`${item}-${index}`} item={item.trim()} />
