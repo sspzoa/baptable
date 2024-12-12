@@ -6,42 +6,56 @@ import { MealCardProps } from '@/types';
 import { getDefaultMealAndDate, getNewDate } from '@/utils/date';
 import { useAtom } from 'jotai';
 import { Coffee, Moon, Utensils } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Layout } from './Layout';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import { MealCard } from './MealCard';
 import MobileMealDisplay from './MobileMealDisplay';
 
-const MealDisplay: React.FC = () => {
+const DEFAULT_EMPTY_MEALS: MealCardProps[] = [
+  { title: '조식', icon: Coffee, content: "", isEmpty: true },
+  { title: '중식', icon: Utensils, content: "", isEmpty: true },
+  { title: '석식', icon: Moon, content: "", isEmpty: true }
+] as const;
+
+const MealCardsDesktop = memo(({ meals }: { meals: MealCardProps[] }) => (
+  <div className="hidden md:flex flex-row gap-3 flex-1">
+    {meals.map((meal) => (
+      <MealCard key={meal.title} {...meal} />
+    ))}
+  </div>
+));
+
+MealCardsDesktop.displayName = 'MealCardsDesktop';
+
+const MealDisplay = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const { data: menu, error, isLoading } = useMealMenu();
   const { preloadDate } = usePreloadMealMenu();
-  const [mounted, setMounted] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const { dateOffset } = getDefaultMealAndDate();
 
-    if (!mounted) {
-      const { dateOffset } = getDefaultMealAndDate();
-      if (dateOffset > 0) {
-        const newDate = getNewDate(selectedDate, dateOffset);
-        setSelectedDate(newDate);
-      }
+    if (dateOffset > 0) {
+      setSelectedDate(getNewDate(selectedDate, dateOffset));
     }
-  }, [mounted, selectedDate, setSelectedDate]);
+  }, []);
 
   useEffect(() => {
-    for (let i = -3; i <= 3; i++) {
-      if (i !== 0) {
-        const adjacentDay = getNewDate(selectedDate, i);
-        preloadDate(adjacentDay);
-      }
-    }
+    const preloadAdjacentDays = async () => {
+      const days = [-3, -2, -1, 1, 2, 3];
+      await Promise.all(
+        days.map(day => preloadDate(getNewDate(selectedDate, day)))
+      );
+    };
+
+    preloadAdjacentDays();
   }, [selectedDate, preloadDate]);
 
   const handleDateChange = (days: number) => {
-    const newDate = getNewDate(selectedDate, days);
-    setSelectedDate(newDate);
+    setSelectedDate(getNewDate(selectedDate, days));
   };
 
   if (!mounted || isLoading) {
@@ -52,30 +66,7 @@ const MealDisplay: React.FC = () => {
     );
   }
 
-  const defaultEmptyMeals: MealCardProps[] = [
-    { title: '조식', icon: Coffee, content: "", isEmpty: true },
-    { title: '중식', icon: Utensils, content: "", isEmpty: true },
-    { title: '석식', icon: Moon, content: "", isEmpty: true }
-  ];
-
-  if (error || !menu) {
-    return (
-      <Layout date={selectedDate} handleDateChange={handleDateChange}>
-        <div className="h-full flex flex-col">
-          <div className="hidden md:flex flex-row gap-3 flex-1">
-            {defaultEmptyMeals.map((meal) => (
-              <MealCard key={meal.title} {...meal} />
-            ))}
-          </div>
-          <div className="md:hidden flex-1">
-            <MobileMealDisplay meals={defaultEmptyMeals} />
-          </div>
-        </div>
-      </Layout>
-    );
-  }
-
-  const meals: MealCardProps[] = [
+  const meals: MealCardProps[] = error || !menu ? DEFAULT_EMPTY_MEALS : [
     { title: '조식', content: menu.breakfast || '', icon: Coffee, isEmpty: !menu.breakfast },
     { title: '중식', content: menu.lunch || '', icon: Utensils, isEmpty: !menu.lunch },
     { title: '석식', content: menu.dinner || '', icon: Moon, isEmpty: !menu.dinner }
@@ -84,11 +75,7 @@ const MealDisplay: React.FC = () => {
   return (
     <Layout date={selectedDate} handleDateChange={handleDateChange}>
       <div className="h-full flex flex-col">
-        <div className="hidden md:flex flex-row gap-3 flex-1">
-          {meals.map((meal) => (
-            <MealCard key={meal.title} {...meal} />
-          ))}
-        </div>
+        <MealCardsDesktop meals={meals} />
         <div className="md:hidden flex-1">
           <MobileMealDisplay meals={meals} />
         </div>
@@ -97,4 +84,4 @@ const MealDisplay: React.FC = () => {
   );
 };
 
-export default MealDisplay;
+export default memo(MealDisplay);
