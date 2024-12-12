@@ -99,7 +99,7 @@ interface ExtendedLayoutProps extends LayoutProps {
 export const Layout = memo(({ children, date, handleDateChange, initialLoading }: ExtendedLayoutProps) => {
   return (
     <div className="min-h-[100dvh] bg-gradient-to-br from-orange-200 to-red-200 py-8 px-4">
-      <div className="max-w-6xl mx-auto flex flex-col gap-4 h-[calc(100dvh-4rem)] min-h-0">
+      <div className="max-w-7xl mx-auto flex flex-col gap-4 h-[calc(100dvh-4rem)] min-h-0">
         <div className="flex flex-col md:flex-row gap-4">
           <Header />
         </div>
