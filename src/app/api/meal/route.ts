@@ -9,7 +9,7 @@ interface CacheEntry {
 class MenuCache {
   private static instance: MenuCache;
   private cache: Map<string, CacheEntry>;
-  private readonly CACHE_DURATION = 1000 * 60 * 60 * 24 * 7; // 7 days
+  private readonly CACHE_DURATION = 1000 * 60 * 60 * 24 * 7;
 
   private constructor() {
     this.cache = new Map();
@@ -23,6 +23,10 @@ class MenuCache {
   }
 
   get(key: string): any | null {
+    if (this.isTodayDate(key)) {
+      return null;
+    }
+
     const entry = this.cache.get(key);
     if (!entry) return null;
 
@@ -35,12 +39,21 @@ class MenuCache {
   }
 
   set(key: string, data: any): void {
+    if (this.isTodayDate(key)) {
+      return;
+    }
+
     const timestamp = Date.now();
     this.cache.set(key, {
       data,
       timestamp,
       expiresAt: timestamp + this.CACHE_DURATION
     });
+  }
+
+  private isTodayDate(dateString: string): boolean {
+    const today = formatDate(new Date());
+    return dateString === today;
   }
 
   clear(): void {

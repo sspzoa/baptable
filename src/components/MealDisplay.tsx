@@ -45,7 +45,7 @@ const MealDisplay = () => {
 
   useEffect(() => {
     const preloadAdjacentDays = async () => {
-      const days = [-2, -1, 1, 2];
+      const days = [-1, 1, 2];
       await Promise.all(
         days.map(day => preloadDate(getNewDate(selectedDate, day)))
       );
