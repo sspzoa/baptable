@@ -89,21 +89,17 @@ jobs:
 
       - name: Deploy new container
         run: |
-          # Pull the latest image
           docker pull ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
           
-          # Stop and remove the deployment container if it exists
           docker stop ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} || true
           docker rm ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} || true
           
-          # Start the new container
           docker run -d \
             --name ${{ env.NAME }}-${{ steps.current.outputs.deploy_container }} \
             -p ${{ steps.current.outputs.deploy_port }}:3000 \
             --restart always \
             ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
           
-          # Health check
           for i in {1..30}; do
             if curl -s http://localhost:${{ steps.current.outputs.deploy_port }}/health; then
               echo "New container is healthy"
@@ -118,15 +114,11 @@ jobs:
 
       - name: Switch traffic
         run: |
-          # Update Nginx configuration or other reverse proxy here
-          # This is a placeholder - you need to implement your actual traffic switching logic
           echo "Switching traffic to port ${{ steps.current.outputs.deploy_port }}"
           
-          # After successful switch, remove old container
           if [ ! -z "${{ steps.current.outputs.current_container }}" ]; then
             docker stop ${{ env.NAME }}-${{ steps.current.outputs.current_container }} || true
             docker rm ${{ env.NAME }}-${{ steps.current.outputs.current_container }} || true
           fi
           
-          # Clean up old images
           docker image prune -af

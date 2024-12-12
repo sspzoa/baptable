@@ -39,7 +39,7 @@ CopyButton.displayName = 'CopyButton';
 const Header = memo(() => (
   <div className="flex items-center justify-center md:justify-between w-full">
     <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-      밥{' '}
+      밥?{' '}
       <span className="text-base text-gray-600 font-normal">
         by{' '}
         <Link
