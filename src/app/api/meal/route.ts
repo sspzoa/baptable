@@ -30,7 +30,7 @@ class MenuCache {
     const entry = this.cache.get(key);
     if (!entry) return null;
 
-    if (Date.now() > entry.expiresAt) {
+    if (this.getKSTTimestamp() > entry.expiresAt) {
       this.cache.delete(key);
       return null;
     }
@@ -43,7 +43,7 @@ class MenuCache {
       return;
     }
 
-    const timestamp = Date.now();
+    const timestamp = this.getKSTTimestamp();
     this.cache.set(key, {
       data,
       timestamp,
@@ -51,9 +51,20 @@ class MenuCache {
     });
   }
 
+  private getKSTTimestamp(): number {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return utc + (9 * 60 * 60 * 1000);
+  }
+
   private isTodayDate(dateString: string): boolean {
-    const today = formatDate(new Date());
+    const today = formatDate(this.getKSTDate());
     return dateString === today;
+  }
+
+  private getKSTDate(): Date {
+    const now = new Date();
+    return new Date(now.getTime() + (9 * 60 * 60 * 1000 + now.getTimezoneOffset() * 60 * 1000));
   }
 
   clear(): void {
@@ -111,10 +122,15 @@ function findTargetPost(menuPosts: Array<any>, dateParam: string): any {
     const [_, month, day] = post.title.match(/(\d+)월\s*(\d+)일/) || [];
     if (!month || !day) return false;
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = getKSTDate().getFullYear();
     const postDate = new Date(currentYear, parseInt(month) - 1, parseInt(day));
     return formatDate(postDate) === formatDate(new Date(dateParam));
   });
+}
+
+function getKSTDate(): Date {
+  const now = new Date();
+  return new Date(now.getTime() + (9 * 60 * 60 * 1000 + now.getTimezoneOffset() * 60 * 1000));
 }
 
 function createErrorResponse(message: string, status: number): Response {
