@@ -20,10 +20,10 @@ const SkeletonHeader = memo(() => (
 SkeletonHeader.displayName = 'SkeletonHeader';
 
 const SkeletonCard = memo(({ widths }: { widths: string[] }) => (
-  <div className="overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-6 flex-1 border border-white/50">
-    <div className="animate-pulse flex flex-col">
+  <div className="h-full overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-6 flex-1 border border-white/50">
+    <div className="animate-pulse flex flex-col h-full">
       <SkeletonHeader />
-      <div className="space-y-2">
+      <div className="space-y-2 flex-1">
         {widths.map((width, index) => (
           <SkeletonItem key={index} width={width} />
         ))}
@@ -39,7 +39,7 @@ export const LoadingSkeleton = memo(({
                                      }: LoadingSkeletonProps) => {
   return (
     <div className="h-full flex flex-col gap-3">
-      <div className="md:hidden flex-1 h-full">
+      <div className="md:hidden h-full flex-1">
         <SkeletonCard widths={widths} />
       </div>
       <div className="hidden md:flex flex-row gap-3 flex-1">
