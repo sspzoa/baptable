@@ -10,7 +10,7 @@ const MenuItem = memo(({ item }: { item: string }) => (
       href={`https://search.naver.com/search.naver?ssc=tab.image.all&where=image&sm=tab_jum&query=${encodeURIComponent(item.trim())}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-1 text-sm hover:text-orange-600 transition-colors duration-300"
+      className="flex items-center gap-1 text-lg font-bold hover:text-orange-600 transition-colors duration-300"
     >
       {item}
       <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
