@@ -30,7 +30,7 @@ export const MealContent = memo(({meal}: MealContentProps) => {
               />
             </div>
           )}
-          <ul className="relative flex flex-col space-y-2">
+          <ul className={`relative flex ${meal.imageUrl ? 'flex-row justify-between flex-wrap gap-2' : 'flex-col space-y-2'}`}>
             {menuItems.map((item, idx) => (
               <MenuItem key={`${item}-${idx}`} item={item}/>
             ))}
