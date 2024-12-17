@@ -1,18 +1,18 @@
-import {MealCardProps} from '@/types';
-import {memo} from 'react';
-import {MealHeader} from './MealHeader';
-import {MenuItem} from "@/components/ui/MenuItem";
+import { MealCardProps } from '@/types';
+import { memo } from 'react';
+import { MealHeader } from './MealHeader';
+import { MenuItem } from "@/components/ui/MenuItem";
 
 interface MealContentProps {
   meal: MealCardProps;
 }
 
-export const MealContent = memo(({meal}: MealContentProps) => {
+export const MealContent = memo(({ meal }: MealContentProps) => {
   const menuItems = meal.content.split('/').filter(item => item.trim());
 
   return (
     <div className="relative flex flex-col h-full">
-      <MealHeader icon={meal.icon} title={meal.title}/>
+      <MealHeader icon={meal.icon} title={meal.title} />
       {meal.isEmpty ? (
         <div className="relative flex items-center justify-center flex-1 text-gray-500">
           급식 정보가 없습니다
@@ -32,7 +32,11 @@ export const MealContent = memo(({meal}: MealContentProps) => {
           )}
           <ul className={`relative flex ${meal.imageUrl ? 'flex-row justify-between flex-wrap gap-2' : 'flex-col space-y-2'}`}>
             {menuItems.map((item, idx) => (
-              <MenuItem key={`${item}-${idx}`} item={item}/>
+              <MenuItem
+                key={`${item}-${idx}`}
+                item={item}
+                hasImage={!!meal.imageUrl}
+              />
             ))}
           </ul>
         </div>
