@@ -1,5 +1,6 @@
 import { MealCardProps } from '@/types';
 import { memo } from 'react';
+import Image from 'next/image';
 import { MealHeader } from './MealHeader';
 import { MenuItem } from "@/components/ui/MenuItem";
 
@@ -21,12 +22,14 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
         <div className="flex flex-col gap-4 max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
           {meal.imageUrl && (
             <div className="relative w-full rounded-xl flex items-center justify-center">
-              <img
-                draggable={false}
+              <Image
                 src={meal.imageUrl}
                 alt={`${meal.title} 메뉴 이미지`}
                 className="object-contain rounded-2xl"
-                loading="lazy"
+                width={500}
+                height={300}
+                priority={false}
+                quality={75}
               />
             </div>
           )}

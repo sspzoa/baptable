@@ -10,7 +10,7 @@ class MenuCache {
   private static instance: MenuCache;
   private cache: Map<string, CacheEntry>;
   private readonly CACHE_DURATION = 1000 * 60 * 60 * 24;
-  private readonly TODAY_CACHE_DURATION = 1000 * 60 * 30;
+  private readonly TODAY_CACHE_DURATION = 1000 * 60 * 5;
 
   private constructor() {
     this.cache = new Map();
