@@ -26,8 +26,8 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
                 src={meal.imageUrl}
                 alt={`${meal.title} 메뉴 이미지`}
                 className="object-contain rounded-2xl"
-                width={500}
-                height={300}
+                width={422}
+                height={320}
                 priority={false}
                 quality={75}
               />
