@@ -40,7 +40,7 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
         <ChevronRight className="w-5 h-5 text-orange-600 relative z-10"/>
       </button>
     </div>
-    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+    <h1 className="hidden text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
       밥{' '}
       <span className="text-base text-gray-600 font-normal">
         by{' '}
