@@ -7,7 +7,7 @@ interface HeaderProps {
 
 export const Header = memo(({ children }: HeaderProps) => (
   <div className="flex items-center justify-center md:justify-between w-full">
-    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+    <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
       밥{' '}
       <span className="text-base text-gray-600 font-normal">
         by{' '}
@@ -17,8 +17,8 @@ export const Header = memo(({ children }: HeaderProps) => (
           target="_blank"
           rel="noreferrer noopener"
         >
-          <span className="ease-in-out duration-300 hover:text-orange-500">sspzoa</span>
-          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 group-hover:w-full transition-all duration-300" />
+          <span className="ease-in-out duration-300 hover:text-red-500">sspzoa</span>
+          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-400 to-orange-500 group-hover:w-full transition-all duration-300" />
         </Link>
       </span>
     </h1>

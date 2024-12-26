@@ -27,7 +27,7 @@ export const CopyButton = memo(({ text }: CopyButtonProps) => {
       {copied ? (
         <Check className="w-4 h-4 text-green-600 relative z-10" />
       ) : (
-        <Copy className="w-4 h-4 text-orange-600 relative z-10" />
+        <Copy className="w-4 h-4 text-red-600 relative z-10" />
       )}
     </button>
   );

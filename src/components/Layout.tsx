@@ -19,10 +19,10 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
       <button
         type="button"
         onClick={() => handleDateChange(-1)}
-        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200/60 before:to-red-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-red-200/60 before:to-orange-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
         aria-label="이전 날짜"
       >
-        <ChevronLeft className="w-5 h-5 text-orange-600 relative z-10"/>
+        <ChevronLeft className="w-5 h-5 text-red-600 relative z-10"/>
       </button>
       <div className="w-[220px] text-center">
       <span className={`text-lg font-bold px-4 text-gray-700 transition-opacity duration-300 ease-in-out ${
@@ -34,13 +34,13 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
       <button
         type="button"
         onClick={() => handleDateChange(1)}
-        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-orange-200/60 before:to-red-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-red-200/60 before:to-orange-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
         aria-label="다음 날짜"
       >
-        <ChevronRight className="w-5 h-5 text-orange-600 relative z-10"/>
+        <ChevronRight className="w-5 h-5 text-red-600 relative z-10"/>
       </button>
     </div>
-    <h1 className="hidden text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+    <h1 className="hidden text-3xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
       밥{' '}
       <span className="text-base text-gray-600 font-normal">
         by{' '}
@@ -50,9 +50,9 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
           target="_blank"
           rel="noreferrer noopener"
         >
-          <span className="ease-in-out duration-300 hover:text-orange-500">sspzoa</span>
+          <span className="ease-in-out duration-300 hover:text-red-500">sspzoa</span>
           <span
-            className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 group-hover:w-full transition-all duration-300"/>
+            className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-400 to-orange-500 group-hover:w-full transition-all duration-300"/>
         </Link>
       </span>
     </h1>
@@ -68,19 +68,30 @@ DateNavigation.displayName = 'DateNavigation';
 
 export const Layout = memo(({children, date, handleDateChange, initialLoading}: ExtendedLayoutProps) => {
   return (
-    <div className="min-h-[100dvh] bg-gradient-to-br from-orange-200 to-red-200 py-8 px-4">
-      <div className="max-w-[1440px] mx-auto flex flex-col gap-3 h-[calc(100dvh-4rem)] min-h-0">
-        <DateNavigation
-          date={date}
-          handleDateChange={handleDateChange}
-          isLoading={initialLoading}
-        />
-        <div className="flex-1 overflow-hidden min-h-0">
-          {children}
+    <div className="relative min-h-[100dvh]">
+      <div
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat blur-xl"
+        style={{
+          backgroundImage: `url('images/background.jpg')`,
+        }}
+      />
+
+      <div className="relative py-8 px-4">
+        <div className="max-w-[1440px] mx-auto flex flex-col gap-3 h-[calc(100dvh-4rem)] min-h-0">
+          <DateNavigation
+            date={date}
+            handleDateChange={handleDateChange}
+            isLoading={initialLoading}
+          />
+          <div className="flex-1 overflow-hidden min-h-0">
+            {children}
+          </div>
         </div>
       </div>
     </div>
   );
 });
+
+export default Layout;
 
 Layout.displayName = 'Layout';
