@@ -14,7 +14,7 @@ const API_URL = 'https://밥.net/api/meal?date=yyyy-MM-dd';
 
 const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigationProps & { isLoading?: boolean }) => (
   <div
-    className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl px-4 py-2 flex items-center justify-center md:justify-between border border-white/50">
+    className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl p-4 md:p-2 flex items-center justify-center md:justify-between border border-white/50">
     <div className='flex items-center justify-center'>
       <button
         type="button"
@@ -25,7 +25,7 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
         <ChevronLeft className="w-5 h-5 text-orange-600 relative z-10"/>
       </button>
       <div className="w-[220px] text-center">
-      <span className={`text-base font-medium px-4 text-gray-700 transition-opacity duration-300 ease-in-out ${
+      <span className={`text-lg font-bold px-4 text-gray-700 transition-opacity duration-300 ease-in-out ${
         isLoading ? 'opacity-0' : 'opacity-100'
       }`}>
         {formatDate(date)}
