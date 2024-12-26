@@ -9,7 +9,10 @@ interface MealContentProps {
 }
 
 export const MealContent = memo(({ meal }: MealContentProps) => {
-  const menuItems = meal.content.split('/').filter(item => item.trim());
+  const menuItems = meal.content
+    .split('/')
+    .filter(item => item.trim())
+    .filter(item => !item.includes('2종1택'));
 
   return (
     <div className="relative flex flex-col h-full">
