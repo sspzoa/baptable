@@ -67,7 +67,7 @@ export const Layout = memo(({children, date, handleDateChange, initialLoading}: 
   return (
     <div className="relative min-h-[100dvh]">
       <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat blur-sm"
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat blur-sm md:blur-md"
         style={{
           backgroundImage: `url('images/background.png')`,
         }}
