@@ -72,7 +72,7 @@ export const Layout = memo(({children, date, handleDateChange, initialLoading}: 
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat blur-md"
         style={{
-          backgroundImage: `url('images/background.jpg')`,
+          backgroundImage: `url('images/background.png')`,
         }}
       />
 
