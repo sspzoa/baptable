@@ -55,7 +55,6 @@ export const MealContent = memo(({meal}: MealContentProps) => {
               <MenuItem
                 key={`${item}-${idx}`}
                 item={item}
-                hasImage={!!meal.imageUrl}
               />
             ))}
           </ul>
