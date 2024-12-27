@@ -29,7 +29,7 @@ export const MealContent = memo(({meal}: MealContentProps) => {
             <div className="relative w-full rounded-xl">
               <button
                 onClick={() => setShowRealImage(!showRealImage)}
-                className="relative w-full overflow-hidden backdrop-blur-xl bg-white/20 rounded-2xl border border-white/30 group"
+                className="ease-in-out duration-300 relative w-full overflow-hidden backdrop-blur-xl bg-white/20 hover:bg-white/50 rounded-2xl border border-white/30 group"
               >
                 <div className={`w-full relative transition-all duration-300 ${
                   showRealImage ? '' : 'h-16'
