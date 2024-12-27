@@ -40,22 +40,19 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
         <ChevronRight className="w-5 h-5 text-red-600 relative z-10"/>
       </button>
     </div>
-    <h1 className="hidden text-3xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-      밥{' '}
-      <span className="text-base text-gray-600 font-normal">
-        by{' '}
-        <Link
-          className="relative group inline-block"
-          href="https://github.com/sspzoa"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
+    <span className="hidden md:block opacity-50 text-base text-gray-400 font-normal">
+        Made by{' '}
+      <Link
+        className="relative group inline-block"
+        href="https://github.com/sspzoa"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
           <span className="ease-in-out duration-300 hover:text-red-500">sspzoa</span>
           <span
             className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-400 to-orange-500 group-hover:w-full transition-all duration-300"/>
         </Link>
       </span>
-    </h1>
     <div
       className="hidden md:flex items-center overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 py-2 px-4 rounded-xl border border-white/50">
       <code className="text-xs font-mono text-gray-600 select-text">{API_URL}</code>
