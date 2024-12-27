@@ -18,7 +18,7 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
     <div className="relative flex flex-col h-full">
       <MealHeader icon={meal.icon} title={meal.title} />
       {meal.isEmpty ? (
-        <div className="relative flex items-center justify-center flex-1 text-gray-500">
+        <div className="relative flex items-center justify-center flex-1 text-white/50">
           급식 정보가 없습니다
         </div>
       ) : (

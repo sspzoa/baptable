@@ -17,7 +17,7 @@ export const NavigationDots = memo(({
         key={index}
         onClick={() => onSelect(index)}
         className={`w-2 h-2 rounded-full transition-all duration-300 ${
-          index === currentIndex ? "bg-red-600 w-4" : "bg-red-300"
+          index === currentIndex ? "bg-white w-4" : "bg-white/50"
         }`}
         aria-label={`${index + 1}번째 메뉴로 이동`}
       />

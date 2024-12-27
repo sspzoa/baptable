@@ -14,18 +14,18 @@ const API_URL = 'https://밥.net/api/meal?date=yyyy-MM-dd';
 
 const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigationProps & { isLoading?: boolean }) => (
   <div
-    className="overflow-hidden w-full backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 rounded-xl p-4 md:p-2 flex items-center justify-center md:justify-between border border-white/50">
+    className="overflow-hidden w-full backdrop-blur-xl bg-white/20 rounded-xl p-4 md:pl-4 md:p-2 flex items-center justify-center md:justify-between border border-white/30">
     <div className='flex items-center justify-center'>
       <button
         type="button"
         onClick={() => handleDateChange(-1)}
-        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-red-200/60 before:to-orange-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-white/30 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
         aria-label="이전 날짜"
       >
-        <ChevronLeft className="w-5 h-5 text-red-600 relative z-10"/>
+        <ChevronLeft className="w-5 h-5 text-white relative z-10"/>
       </button>
       <div className="w-[220px] text-center">
-      <span className={`text-lg font-bold px-4 text-gray-700 transition-opacity duration-300 ease-in-out ${
+      <span className={`text-lg font-bold px-4 text-white transition-opacity duration-300 ease-in-out ${
         isLoading ? 'opacity-0' : 'opacity-100'
       }`}>
         {formatDate(date)}
@@ -34,13 +34,13 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
       <button
         type="button"
         onClick={() => handleDateChange(1)}
-        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-red-200/60 before:to-orange-200/60 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="p-1.5 rounded-lg relative before:absolute before:inset-0 before:rounded-lg before:bg-white/30 before:opacity-0 before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100 transform hover:scale-110 transition-transform duration-300 ease-in-out"
         aria-label="다음 날짜"
       >
-        <ChevronRight className="w-5 h-5 text-red-600 relative z-10"/>
+        <ChevronRight className="w-5 h-5 text-white relative z-10"/>
       </button>
     </div>
-    <span className="hidden md:block opacity-50 text-base text-gray-400 font-normal">
+    <span className="hidden md:block opacity-50 text-base text-white font-normal">
         Made by{' '}
       <Link
         className="relative group inline-block"
@@ -48,14 +48,14 @@ const DateNavigation = memo(({ date, handleDateChange, isLoading }: DateNavigati
         target="_blank"
         rel="noreferrer noopener"
       >
-          <span className="ease-in-out duration-300 hover:text-red-500">sspzoa</span>
+          <span className="ease-in-out duration-300 hover:text-white/80">sspzoa</span>
           <span
-            className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-400 to-orange-500 group-hover:w-full transition-all duration-300"/>
+            className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/30 group-hover:w-full transition-all duration-300"/>
         </Link>
       </span>
     <div
-      className="hidden md:flex items-center overflow-hidden backdrop-blur-xl bg-gradient-to-r from-white/70 to-white/50 py-2 px-4 rounded-xl border border-white/50">
-      <code className="text-xs font-mono text-gray-600 select-text">{API_URL}</code>
+      className="hidden md:flex items-center overflow-hidden py-2 pl-4 pr-2 rounded-xl border border-white/30 gap-2">
+      <code className="text-xs font-mono text-white select-text">{API_URL}</code>
       <CopyButton text={API_URL}/>
     </div>
   </div>

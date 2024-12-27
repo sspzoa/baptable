@@ -3,8 +3,8 @@ import { memo } from 'react';
 
 const SkeletonItem = memo(({ width }: { width: string }) => (
   <div className="flex items-center py-1 pl-4 relative">
-    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-red-200/60 to-orange-200/60" />
-    <div className={`h-7 rounded-full bg-gradient-to-br from-red-200/60 to-orange-200/60 ${width}`} />
+    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30" />
+    <div className={`h-7 rounded-full bg-white/30 ${width}`} />
   </div>
 ));
 
@@ -12,15 +12,15 @@ SkeletonItem.displayName = 'SkeletonItem';
 
 const SkeletonHeader = memo(() => (
   <div className="flex items-center gap-2 mb-6">
-    <div className="w-9 h-9 bg-gradient-to-br from-red-200/60 to-orange-200/60 rounded-xl" />
-    <div className="h-7 w-16 bg-gradient-to-br from-red-200/60 to-orange-200/60 rounded-lg" />
+    <div className="w-9 h-9 bg-white/30 rounded-xl" />
+    <div className="h-7 w-16 bg-white/30 rounded-lg" />
   </div>
 ));
 
 SkeletonHeader.displayName = 'SkeletonHeader';
 
 const SkeletonCard = memo(({ widths }: { widths: string[] }) => (
-  <div className="h-full overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-6 flex-1 border border-white/50">
+  <div className="h-full overflow-hidden backdrop-blur-xl bg-white/20 rounded-2xl p-6 flex-1 border border-white/30">
     <div className="animate-pulse flex flex-col h-full">
       <SkeletonHeader />
       <div className="space-y-2 flex-1">

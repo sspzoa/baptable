@@ -45,7 +45,7 @@ const MobileMealDisplay = ({ meals }: MealDisplayProps) => {
   }, []);
 
   return (
-    <div className="relative h-full overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/70 to-white/50 rounded-2xl p-6 flex-1 border border-white/50">
+    <div className="relative h-full overflow-hidden backdrop-blur-xl bg-white/20 rounded-2xl p-6 flex-1 border border-white/30">
       <div className="relative flex flex-col h-full">
         <div
           className="flex-1 touch-pan-x"
