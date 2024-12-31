@@ -24,14 +24,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <head>
-        <meta property="og:image" content="https://xn--rh3b.net/images/og-image.png" />
-        <meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-      </head>
-      <body className={`${WantedSansVariable.variable} antialiased`}>
-        <RootWrapper>{children}</RootWrapper>
+    <head>
+      <meta property="og:image" content="https://xn--rh3b.net/images/og-image.png"/>
+      <meta name="viewport" content="initial-scale=1, viewport-fit=cover"/>
+      <meta name="apple-mobile-web-app-capable" content="yes"/>
+      <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"/>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    </head>
+    <body className={`${WantedSansVariable.variable} antialiased`}>
+    <RootWrapper>{children}</RootWrapper>
       </body>
     </html>
   );
