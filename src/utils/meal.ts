@@ -151,7 +151,7 @@ export const formatDate = (date: Date): string => {
  */
 export async function fetchMealMenu(dateString: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/meal?date=${dateString}`);
+    const res = await fetch(`/api/meal?date=${dateString}`);
     if (!res.ok) {
       throw new Error('Failed to fetch meal menu');
     }
