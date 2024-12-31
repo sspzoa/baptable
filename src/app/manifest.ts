@@ -3,7 +3,7 @@ export default function manifest() {
     name: '밥',
     short_name: '밥',
     description: '한국디지털미디어고등학교 급식 API',
-    display: 'standalone',
+    display: 'fullscreen',
     orientation: 'portrait-primary',
     appleWebApp: true,
     icons: [
