@@ -1,5 +1,4 @@
 // src/components/Meal/MobileMealDisplay.tsx
-
 "use client"
 
 import { memo, useState, useCallback, useEffect } from 'react';
@@ -7,14 +6,9 @@ import { getDefaultMealAndDate } from '@/utils/date';
 import { MealCardProps } from '@/types';
 import { MealContent } from './MealContent';
 import { NavigationDots } from './NavigationDots';
+import { preloadImages, BACKGROUNDS } from '@/utils/imagePreloader';
 
 const MIN_SWIPE_DISTANCE = 50;
-
-const BACKGROUNDS = {
-  breakfast: '/images/breakfast.svg',
-  lunch: '/images/lunch.svg',
-  dinner: '/images/dinner.svg'
-} as const;
 
 interface MobileMealDisplayProps {
   meals: MealCardProps[];
@@ -25,6 +19,17 @@ const MobileMealDisplay = ({ meals }: MobileMealDisplayProps) => {
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 이미지 프리로드
+  useEffect(() => {
+    preloadImages()
+      .then(() => setIsLoading(false))
+      .catch(error => {
+        console.error('Failed to preload images:', error);
+        setIsLoading(false); // 에러가 발생해도 로딩 상태는 해제
+      });
+  }, []);
 
   // 현재 인덱스에 따른 배경 변경
   useEffect(() => {
@@ -34,15 +39,14 @@ const MobileMealDisplay = ({ meals }: MobileMealDisplayProps) => {
       BACKGROUNDS.dinner
     ];
 
-    // 모바일 여부 체크
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return;
 
     const backgroundElement = document.querySelector<HTMLDivElement>('.background-image');
-    if (backgroundElement) {
+    if (backgroundElement && !isLoading) {
       backgroundElement.style.backgroundImage = `url(${backgrounds[currentIndex]})`;
     }
-  }, [currentIndex]);
+  }, [currentIndex, isLoading]);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -74,36 +78,42 @@ const MobileMealDisplay = ({ meals }: MobileMealDisplayProps) => {
 
   return (
     <div className="relative h-full overflow-hidden backdrop-blur-xl bg-white/20 rounded-2xl p-6 flex-1 border border-white/30">
-      <div className="relative flex flex-col h-full">
-        <div
-          className="flex-1 touch-pan-x"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className="relative h-full">
-            {meals.map((meal, index) => (
-              <div
-                key={meal.title}
-                className="absolute w-full h-full transition-all duration-300"
-                style={{
-                  left: `${index * 100}%`,
-                  transform: `translateX(-${currentIndex * 100}%)`,
-                  opacity: currentIndex === index ? 1 : 0,
-                  pointerEvents: currentIndex === index ? 'auto' : 'none',
-                }}
-              >
-                <MealContent meal={meal} />
-              </div>
-            ))}
-          </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
-        <NavigationDots
-          currentIndex={currentIndex}
-          total={meals.length}
-          onSelect={handleDotSelect}
-        />
-      </div>
+      ) : (
+        <div className="relative flex flex-col h-full">
+          <div
+            className="flex-1 touch-pan-x"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="relative h-full">
+              {meals.map((meal, index) => (
+                <div
+                  key={meal.title}
+                  className="absolute w-full h-full transition-all duration-300"
+                  style={{
+                    left: `${index * 100}%`,
+                    transform: `translateX(-${currentIndex * 100}%)`,
+                    opacity: currentIndex === index ? 1 : 0,
+                    pointerEvents: currentIndex === index ? 'auto' : 'none',
+                  }}
+                >
+                  <MealContent meal={meal} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <NavigationDots
+            currentIndex={currentIndex}
+            total={meals.length}
+            onSelect={handleDotSelect}
+          />
+        </div>
+      )}
     </div>
   );
 };
