@@ -63,7 +63,7 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
           )}
 
           {/* 메뉴 목록 */}
-          <ul className="flex flex-col space-y-2">
+          <ul className="flex flex-col space-y-0.5 md:space-y-1.5">
             {menuItems.map((item, idx) => (
               <MenuItem key={`${item}-${idx}`} item={item} />
             ))}
