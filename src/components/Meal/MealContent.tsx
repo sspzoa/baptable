@@ -19,6 +19,8 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
     .split('/')
     .map(item => item.trim())
     .filter(Boolean)         // 빈 문자열 제외
+    .filter(item => !item.includes('우유'))
+    .filter(item => !item.includes('시리얼'));
 
   return (
     <div className="relative flex flex-col h-full">
