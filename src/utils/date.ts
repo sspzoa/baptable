@@ -1,63 +1,44 @@
-const KOREAN_WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'] as const;
-const KOREA_TIMEZONE = 'Asia/Seoul';
+// src/utils/date.ts
+import { addDays } from 'date-fns';
 
-type MealTime = {
-  index: number;
-  dateOffset: number;
-};
+export function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekdayIndex = date.getDay();
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekday = weekdays[weekdayIndex];
 
-export const formatDate = (date: string): string => {
-  try {
-    const dateObj = new Date(date);
-    if (isNaN(dateObj.getTime())) {
-      throw new Error('Invalid date');
-    }
+  // "2023년 3월 23일 (목)" 형태
+  return `${year}년 ${month}월 ${day}일 (${weekday})`;
+}
 
-    const [year, month, day] = date.split('-');
-    const weekday = KOREAN_WEEKDAYS[dateObj.getUTCDay()];
-    return `${year}년 ${month}월 ${day}일 (${weekday})`;
-  } catch (error) {
-    console.error('Date formatting error:', error);
-    return 'Invalid Date';
+// 날짜 이동
+export function getNewDate(date: Date, dayOffset: number): Date {
+  return addDays(date, dayOffset);
+}
+
+// 초기 디폴트
+export function getDefaultMealAndDate() {
+  const now = new Date();
+  const hour = now.getHours();
+
+  let index = 0;       // 0: 조식, 1: 중식, 2: 석식
+  let dateOffset = 0;  // 현재 날짜 보정
+
+  if (hour >= 8 && hour < 14) {
+    index = 1;
+  } else if (hour >= 14) {
+    index = 2;
+  } else {
+    index = 0;
   }
-};
 
-export const getNewDate = (currentDate: string, days: number): string => {
-  try {
-    const date = new Date(currentDate);
-    if (isNaN(date.getTime())) {
-      throw new Error('Invalid date');
-    }
-
-    date.setDate(date.getDate() + days);
-    return formatDateToISO(date);
-  } catch (error) {
-    console.error('Error calculating new date:', error);
-    return formatDateToISO(new Date());
+  // 오후 8시(20시) 이후면 다음날로 설정
+  if (hour >= 20) {
+    dateOffset = 1;
+    index = 0;  // 다음날 조식으로 설정
   }
-};
 
-export const getDefaultMealAndDate = (): MealTime => {
-  const hour = new Date().getHours();
-
-  if (hour >= 20) return { index: 0, dateOffset: 1 };
-  if (hour >= 14) return { index: 2, dateOffset: 0 };
-  if (hour >= 8) return { index: 1, dateOffset: 0 };
-  return { index: 0, dateOffset: 0 };
-};
-
-export const getCurrentDate = (): string => {
-  try {
-    const now = new Date(
-      new Date().toLocaleString('en-US', { timeZone: KOREA_TIMEZONE })
-    );
-    return formatDateToISO(now);
-  } catch (error) {
-    console.error('Error getting current date:', error);
-    return formatDateToISO(new Date());
-  }
-};
-
-function formatDateToISO(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  return { index, dateOffset };
 }

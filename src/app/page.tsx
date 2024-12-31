@@ -1,4 +1,4 @@
-import MealDisplay from "@/components/MealDisplay";
+import { MealDisplay } from '@/components/Meal';
 
 export default function Home() {
   return (

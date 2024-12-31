@@ -1,24 +1,19 @@
-import type { LucideIcon } from 'lucide-react';
+// src/types/index.ts
+import { LucideIcon } from 'lucide-react';
 
-export interface MealImages {
-  breakfast: string;
-  lunch: string;
-  dinner: string;
+// LayoutProps
+export interface LayoutProps {
+  date: Date;
+  handleDateChange: (days: number) => void;
 }
 
-export interface MealMenu {
-  breakfast: string;
-  lunch: string;
-  dinner: string;
-  images?: MealImages;
+// DateNavigationProps
+export interface DateNavigationProps {
+  date: Date;
+  handleDateChange: (days: number) => void;
 }
 
-export interface MenuPost {
-  documentId: string;
-  title: string;
-  date: string;
-}
-
+// MealCardProps
 export interface MealCardProps {
   title: string;
   content: string;
@@ -27,22 +22,29 @@ export interface MealCardProps {
   imageUrl?: string;
 }
 
-export interface MealSwiperProps {
-  meals: MealCardProps[];
-}
-
+// LoadingSkeletonProps
 export interface LoadingSkeletonProps {
   widths?: string[];
-  isMobile?: boolean;
 }
 
-export interface DateNavigationProps {
-  date: string;
-  handleDateChange: (days: number) => void;
+// MealImages
+export interface MealImages {
+  breakfast: string;
+  lunch: string;
+  dinner: string;
 }
 
-export interface LayoutProps {
-  children: React.ReactNode;
+// MealMenu
+export interface MealMenu {
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+  images?: MealImages;
+}
+
+// MenuPost
+export interface MenuPost {
+  documentId: string;
+  title: string;
   date: string;
-  handleDateChange: (days: number) => void;
 }
