@@ -22,7 +22,7 @@ const SkeletonCard = memo(({ widths }: { widths: string[] }) => (
   <div className="h-full overflow-hidden backdrop-blur-xl bg-white/20 rounded-2xl p-6 flex-1 border border-white/30">
     <div className="animate-pulse flex flex-col h-full">
       <SkeletonHeader />
-      <div className="space-y-2 flex-1">
+      <div className="space-y-0.5 md:space-y-1.5 flex-1">
         {widths.map((width, i) => (
           <SkeletonItem key={i} width={width} />
         ))}
