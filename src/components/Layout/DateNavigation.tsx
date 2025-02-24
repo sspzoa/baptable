@@ -9,7 +9,7 @@ interface ExtendedProps extends DateNavigationProps {
   isLoading?: boolean;
 }
 
-const API_URL = 'https://밥.net/api/meal?date=yyyy-MM-dd';
+const API_URL = 'https://api.밥.net/yyyy-MM-dd';
 
 export const DateNavigation = memo(
   ({ date, handleDateChange, isLoading }: ExtendedProps) => {
