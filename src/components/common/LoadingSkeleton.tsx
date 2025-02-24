@@ -5,7 +5,7 @@ import { LoadingSkeletonProps } from '@/types';
 const SkeletonItem = memo(({ width }: { width: string }) => (
   <div className="flex items-center py-1 pl-4 relative">
     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30" />
-    <div className={`h-7 rounded-full bg-white/30 ${width}`} />
+    <div className={`h-6 md:h-7 rounded-full bg-white/30 ${width}`} />
   </div>
 ));
 SkeletonItem.displayName = 'SkeletonItem';
