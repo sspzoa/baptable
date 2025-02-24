@@ -8,7 +8,7 @@ interface MealHeaderProps {
 }
 
 export const MealHeader = memo(({ icon: Icon, title }: MealHeaderProps) => (
-  <div className="flex items-center gap-2 mb-6">
+  <div className="flex items-center gap-2 mb-4">
     <div className="p-2 bg-white/20 rounded-xl">
       <Icon className="w-5 h-5 text-white" />
     </div>

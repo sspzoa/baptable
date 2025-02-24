@@ -11,7 +11,7 @@ const SkeletonItem = memo(({ width }: { width: string }) => (
 SkeletonItem.displayName = 'SkeletonItem';
 
 const SkeletonHeader = memo(() => (
-  <div className="flex items-center gap-2 mb-6">
+  <div className="flex items-center gap-2 mb-4">
     <div className="w-9 h-9 bg-white/30 rounded-xl" />
     <div className="h-7 w-16 bg-white/30 rounded-lg" />
   </div>
