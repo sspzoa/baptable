@@ -60,7 +60,7 @@ export const Layout = memo(
           }}
         />
         <div className="relative py-8 px-4">
-          <div className="max-w-[1440px] mx-auto flex flex-col-reverse md:flex-col gap-3 h-[calc(100dvh-4rem)] min-h-0">
+          <div className="max-w-[1440px] mx-auto flex flex-col md:flex-col gap-3 h-[calc(100dvh-4rem)] min-h-0">
             <DateNavigation
               date={date}
               handleDateChange={handleDateChange}
