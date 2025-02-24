@@ -31,17 +31,17 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
           급식 정보가 없습니다
         </div>
       ) : (
-        <div className="flex flex-col gap-4 max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
+        <div className="flex flex-col gap-2 max-h-[calc(100%-4rem)] overflow-y-auto overflow-x-hidden">
           {/* 이미지 토글 */}
           {meal.imageUrl && (
             <div className="relative w-full rounded-xl">
               <button
                 onClick={() => setShowRealImage(prev => !prev)}
-                className="ease-in-out duration-300 relative w-full overflow-hidden backdrop-blur-xl bg-white/20 hover:bg-white/50 rounded-2xl border border-white/30 group"
+                className="ease-in-out duration-300 relative w-full overflow-hidden backdrop-blur-md bg-white/20 hover:bg-white/50 rounded-2xl border border-white/30 group"
               >
                 <div
                   className={`w-full relative transition-all duration-300 ${
-                    showRealImage ? '' : 'h-16'
+                    showRealImage ? '' : 'h-12 md:h-16'
                   }`}
                 >
                   <img
@@ -49,12 +49,12 @@ export const MealContent = memo(({ meal }: MealContentProps) => {
                     src={meal.imageUrl}
                     alt={`${meal.title} 메뉴 이미지`}
                     className={`w-full h-full object-cover transition-all duration-300 ${
-                      showRealImage ? 'blur-0 opacity-100' : 'blur-md opacity-50'
+                      showRealImage ? 'blur-0 opacity-100' : 'blur-sm opacity-80'
                     }`}
                   />
                   {!showRealImage && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <ImageIcon className="w-8 h-8 text-white" />
+                      <ImageIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </div>
                   )}
                 </div>

@@ -16,7 +16,7 @@ export const MenuItem = memo(({ item }: MenuItemProps) => (
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 text-lg font-bold hover:text-white/80 transition-colors duration-300"
+      className="flex items-center gap-2 text-base md:text-lg font-bold hover:text-white/80 transition-colors duration-300"
     >
       {item}
       <ExternalLink className="w-4 h-4 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />

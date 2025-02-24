@@ -40,7 +40,7 @@ export const DateNavigation = memo(
           {/* 날짜 표시 */}
           <div className="w-[220px] text-center">
             <span
-              className={`text-lg font-bold px-4 text-white transition-opacity duration-300 ${
+              className={`text-base md:text-lg font-bold px-4 text-white transition-opacity duration-300 ${
                 isLoading ? 'opacity-0' : 'opacity-100'
               }`}
             >

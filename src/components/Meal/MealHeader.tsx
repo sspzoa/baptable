@@ -12,7 +12,7 @@ export const MealHeader = memo(({ icon: Icon, title }: MealHeaderProps) => (
     <div className="p-2 bg-white/20 rounded-xl">
       <Icon className="w-5 h-5 text-white" />
     </div>
-    <h2 className="text-xl font-bold text-white">{title}</h2>
+    <h2 className="text-lg md:text-xl font-bold text-white">{title}</h2>
   </div>
 ));
 
