@@ -1,9 +1,9 @@
 // src/utils/imagePreloader.ts
 
 const BACKGROUNDS = {
-  breakfast: '/images/breakfast.svg',
-  lunch: '/images/lunch.svg',
-  dinner: '/images/dinner.svg'
+  breakfast: '/images/breakfast.webp',
+  lunch: '/images/lunch.webp',
+  dinner: '/images/dinner.webp'
 } as const;
 
 // 이미지 미리 로드 함수
