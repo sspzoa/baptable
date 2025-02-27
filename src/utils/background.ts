@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 
 const BACKGROUNDS = {
-  breakfast: '/images/breakfast.webp',
-  lunch: '/images/lunch.webp',
-  dinner: '/images/dinner.webp'
+  breakfast: '/images/breakfast.svg',
+  lunch: '/images/lunch.svg',
+  dinner: '/images/dinner.svg'
 } as const;
 
 export function getTimeBasedBackground(date: Date): string {

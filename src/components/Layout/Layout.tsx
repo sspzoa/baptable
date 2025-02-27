@@ -9,9 +9,9 @@ interface ExtendedLayoutProps extends LayoutProps {
 }
 
 const BACKGROUNDS = {
-  breakfast: '/images/breakfast.webp',
-  lunch: '/images/lunch.webp',
-  dinner: '/images/dinner.webp'
+  breakfast: '/images/breakfast.svg',
+  lunch: '/images/lunch.svg',
+  dinner: '/images/dinner.svg'
 } as const;
 
 const getTimeBasedBackground = (date: Date): string => {
@@ -54,7 +54,7 @@ export const Layout = memo(
     return (
       <div className="relative min-h-[100dvh]">
         <div
-          className="background-image blur-sm fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
+          className="background-image fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
           style={{
             backgroundBlendMode: 'overlay'
           }}
